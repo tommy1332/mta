@@ -1,0 +1,122 @@
+<meta>
+	<info author="mytronix" version="Dev" type="gamemode" name="Test" />
+	
+	<config src="help.xml" type="client"/>
+	
+	<include resource="scoreboard"/>
+	
+	<map src="Insel01.map" />
+
+	<!-- Tools -->
+	<script src="tools/util.server.lua" />
+	<script src="tools/util.client.lua" type="client"/>
+
+	<script src="tools/var_dump.lua" />
+	<script src="tools/var_dump.lua" type="client"/>
+
+	<script src="tools/dsl.lua" />
+	<script src="tools/dsl.lua" type="client" />
+
+	<script src="tools/xml.lua" />
+	<script src="tools/xml.lua" type="client" />
+
+	<script src="tools/tools.lua" />
+	<script src="tools/tools.lua" type="client" />
+	
+	<script src="tools/client_anim.lua" type="client"/>
+	<script src="tools/textlib.lua" type="client"/>
+	<script src="tools/textlib_anim.lua" type="client"/>
+	
+	<script src="tools/l10n.lua"/>
+	<script src="tools/l10n.lua" type="client"/>
+
+
+	<!-- Module -->
+	<script src="base.server.lua" />
+	<script src="base.client.lua" type="client" />
+	
+	<script src="db.server.lua" />
+	
+	<!-- <script src="tvoice.server.lua" /> -->
+	
+	<script src="gui.client.lua" type="client" />
+
+	<script src="mmenu.client.lua" type="client" />
+
+	<script src="acc.server.lua" />
+	<script src="acc.client.lua" type="client" />
+
+	<script src="grp.server.lua" />
+
+	<script src="plr.server.lua" />	
+	
+	<script src="board.server.lua" />
+	
+	<script src="right.server.lua" />	
+	
+	<script src="asys.server.lua" />
+	
+	<script src="amenu.client.lua" type="client" />
+	
+	<script src="vehicles.server.lua" />
+	<script src="vehicles.client.lua" type="client" />
+	
+	<script src="gates.server.lua" />
+	<script src="entrances.server.lua" />
+	
+	<script src="weather.server.lua" />
+	
+	<script src="carmods.client.lua" type="client" />
+	
+	<script src="firstperson.client.lua" type="client" />
+	<script src="health.client.lua" type="client" />
+	
+	<!-- ^- Scripte hier nach Wichtigkeit sortieren! -->
+	
+	<!-- Images -->
+	<!-- Tacho -->
+	<file src="data/images/blinker.png" />
+	<file src="data/images/drehzahlzeiger.png" />
+	<file src="data/images/geschwzeiger.png" />
+	<file src="data/images/handbremse.png" />
+	<file src="data/images/lampe1.png" />
+	<file src="data/images/lampe2.png" />
+	<file src="data/images/lampe3.png" />
+	<file src="data/images/Tacho.png" />
+	<file src="data/images/tankleer.png" />
+	<file src="data/images/zeigertanktemp.png" />
+	<!-- Health Body -->
+	<file src="data/images/body_main.png" />
+	<file src="data/images/body_head.png" />
+	<file src="data/images/body_arms.png" />
+	<file src="data/images/body_legs.png" />
+	
+	<!-- Sounds -->
+	<file src="data/sounds/switch.mp3" />
+	<file src="data/sounds/handbrake.mp3" />
+	<file src="data/sounds/blinker.mp3" />
+	
+	<!-- Carmods -->
+    <file src="data/carmods/peren.txd" />
+    <file src="data/carmods/peren.dff" />
+    <file src="data/carmods/bullet.txd" />
+    <file src="data/carmods/bullet.dff" />
+    <file src="data/carmods/bullet1.txd" />
+    <file src="data/carmods/bullet2.txd" />
+    <file src="data/carmods/bullet4.txd" />
+    <file src="data/carmods/bullet3.txd" />
+    <file src="data/carmods/bullet.col" />
+    <file src="data/carmods/infernus.dff" />
+    <file src="data/carmods/infernus1.txd" />
+    <file src="data/carmods/infernus2.txd" />
+    <file src="data/carmods/infernus4.txd" />
+    <file src="data/carmods/infernus3.txd" />
+    <file src="data/carmods/infernus.txd" />
+	
+	<!-- Alles weiter unten ist noch doof gemacht. :C -->
+	
+	<!--
+	<script src="test.server.lua" />
+	<script src="test.client.lua" type="client" />
+	-->
+</meta>

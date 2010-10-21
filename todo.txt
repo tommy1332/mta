@@ -1,0 +1,17 @@
+Features:
+[X] Clientseitige-Loginfunktion, welche das Fenster öffnet
+[X] Server loggt Spieler aus, wenn sie leaven
+[X] Eingeloggte Spieler haben einen Charakter etc.
+[X] Spieler-/'Zuschauer'-Modus
+[X] Voreingestellte Spawnpunkte mit Namen aus XML-Datei laden.
+[X] Hauptmenü (eigenes Modul) ... Submenüs lassen sich von Modulen anhängen.
+[ ] Modul: Locations (loc), managt wichtigte Orte. -> laden, lesen, verändern, speichern -> Wird z.B. zum Spawnen genutzt. :)
+[X] GUI-System. Zuständig für allgemeine GUI-Animationen und Management überhaupt. :o
+[ ] Gruppensystem.
+
+
+Bugs:
+[X] Man kann sich mehrfach einloggen -> führt zu fehlerhaftem Respawnen.
+[X] Hauptmenü lässt sich nicht mit F1 schließen.
+[ ] Lokalisierung ausbauen? Ist vllt. doch nicht so pralle?
+[ ] Fehlerhaftes Spawnen passiert trotzdem noch. >:O

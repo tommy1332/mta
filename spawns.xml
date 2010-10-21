@@ -1,0 +1,4 @@
+<spawns>
+    <spawn id="fleischberg" x="-50" y="-271" z="7" rot="336" />
+	<spawn id="insel" x="2129.68" y = "-3913.05" z="5.64" rot="336" />
+</spawns>

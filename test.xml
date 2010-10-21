@@ -1,0 +1,15 @@
+<l10n>
+	<key id="test">
+		<en>This is a test!</en>
+		<fr>C'est une test!</fr>
+		<de>Das ist ein Test!</de>
+	</key>
+	
+	<key id="great"><de>toll</de></key>
+	
+	<key id="acc">
+		<key id="yeswecan">
+			<de>Jau, wir schaff'n das!</de>
+		</key>
+	</key>
+</l10n>
