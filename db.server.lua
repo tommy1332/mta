@@ -39,6 +39,7 @@ function db.connect()
 	log('db.onStart')
 
 	if db.connection == nil then
+		log("mysql_connect("..get('db/hostname')..", "..get('db/username')..", "..get('db/password')..", "..get('db/database')..")")
 		db.connection = mysql_connect(get('db/hostname'), get('db/username'), get('db/password'), get('db/database'))
 		if not db.connection then
 			log('mysql_connect failed: [ hostname: '..get('db/hostname')..', username: '..get('db/username')..', database: '..get('db/database')..' ]')
