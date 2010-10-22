@@ -19,7 +19,9 @@ firstperson =
 	headX, headY, headZ = 0.0, 0.0, 0.0,
 	cursorX, cursorY = 1.0, 1.0,
 	lookup = false,
-	roll = 0.0
+	roll = 0.0,
+	fTimeOld = 0.0,
+	fTime = 0.0
 }
 
 screenSizeX, screenSizeY = guiGetScreenSize()
@@ -69,6 +71,10 @@ function firstperson.calculateCamera()
 		else
 			firstperson.roll = -newVehicleAngleY
 		end
+	else -- interpoliere roll ausserhalb des fahrzeuges wieder auf 0
+		if firstperson.roll != 0 then
+			firstperson.roll = firstperson.roll - (firstperson.roll*(firstperson.fTime*0.01))
+		end
 	end
 	if firstperson.viewAngleZ < 1.0 then
 		firstperson.viewAngleZ = 1.0
@@ -93,6 +99,12 @@ function firstperson.onStart()
 			setCameraMatrix(firstperson.headX + firstperson.lookAtX, firstperson.headY + firstperson.lookAtY, firstperson.headZ, firstperson.headX + firstperson.lookAtX*2, firstperson.headY + firstperson.lookAtY*2, firstperson.headZ + firstperson.lookAtZ*2, firstperson.roll, 90)
 		end
 	end)
+	addEventHandler('onClientRender', g_Root,
+	function()
+		local tickcount = getTickCount()
+		firstperson.fTime = tickcount - fTime_old
+		firstperson.fTimeOld = tickcount	
+	end
 	addEventHandler('onClientCursorMove', g_Root,
 	function(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
 		if firstperson.lookup == false then
