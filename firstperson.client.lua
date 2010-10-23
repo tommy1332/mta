@@ -72,7 +72,7 @@ function firstperson.calculateCamera()
 			firstperson.roll = -newVehicleAngleY
 		end
 	else -- interpoliere roll ausserhalb des fahrzeuges wieder auf 0
-		if firstperson.roll != 0 then
+		if firstperson.roll > 0 then
 			firstperson.roll = firstperson.roll - (firstperson.roll*(firstperson.fTime*0.01))
 		end
 	end

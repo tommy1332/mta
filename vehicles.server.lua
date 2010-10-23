@@ -17,6 +17,7 @@
 		vehicles.damagePlayer(loss)
 		vehicles.tryEnter(player, seat, jacked)
 		vehicles.tryExit(player, seat, jacked)
+		vehicles.isValidModel(modelID)
 		
 	Kommandos:
 		/veh [modelid]  < Kommando um ein beliebiges Fahrzeug zu erstellen
@@ -156,21 +157,31 @@ function vehicles.unloadCars()
 	end
 end
 
+-- Tool um zu pruefen, ob die Model ID existiert
+function vehicles.isValidModel(modelID)
+	if vehid > 399 and vehid < 612 then
+		return true
+	end
+	return false
+end
+
 -- Kommando um ein beliebiges Fahrzeug zu erstellen
 function vehicles.commandVeh(playerSource, commandName, col1)
-	local x, y, z = getElementPosition ( playerSource )
-	local vehid = #vehicles.data + 1
-	vehicles.data[vehid] = { id = vehid, modelid = col1, x = x, y = y, z = z, rx = 0.0, ry = 0.0, rz = 0.0, numberplate = {}, meta = {} }
-	vehicles.settings[vehid] = { lights = 1, engine = false, handbrake = true, blinker = 0, blinkerstate = false }
-	local vehelement = createVehicle(vehicles.data[vehid].modelid, x, y, z)
-	setElementID(vehelement, 'veh ' .. vehid)
-	if vehelement then
-		setVehicleRespawnPosition(vehelement, vehicles.data[vehid].x, vehicles.data[vehid].y, vehicles.data[vehid].z, vehicles.data[vehid].rx, vehicles.data[vehid].ry, vehicles.data[vehid].rz)
-		setVehicleFuelTankExplodable(vehelement, true)
-		db.query('INSERT INTO vehicles (modelid,x,y,z,rx,ry,rz,numberplate,meta) VALUES ("'..db.escQS(vehicles.data[vehid].modelid)..'","'..db.escQS(vehicles.data[vehid].x)..'","'..db.escQS(vehicles.data[vehid].y)..'","'..db.escQS(vehicles.data[vehid].z)..'","'..db.escQS(vehicles.data[vehid].rx)..'","'..db.escQS(vehicles.data[vehid].ry)..'","'..db.escQS(vehicles.data[vehid].rz)..'","'..db.escQS(toJSON(vehicles.data[vehid].numberplate))..'","'..db.escQS(toJSON(vehicles.data[vehid].meta))..'")')
-		local tbl = db.query('SELECT * FROM vehicles ORDER BY id DESC LIMIT 1')
-		vehicles.data[vehid] = tbl[1]
-		vehicles.data[vehid].vehid = vehelement
+	if isValidModel(tonumber(col1)) then
+		local x, y, z = getElementPosition ( playerSource )
+		local vehid = #vehicles.data + 1
+		vehicles.data[vehid] = { id = vehid, modelid = col1, x = x, y = y, z = z, rx = 0.0, ry = 0.0, rz = 0.0, numberplate = {}, meta = {} }
+		vehicles.settings[vehid] = { lights = 1, engine = false, handbrake = true, blinker = 0, blinkerstate = false }
+		local vehelement = createVehicle(vehicles.data[vehid].modelid, x, y, z)
+		setElementID(vehelement, 'veh ' .. vehid)
+		if vehelement then
+			setVehicleRespawnPosition(vehelement, vehicles.data[vehid].x, vehicles.data[vehid].y, vehicles.data[vehid].z, vehicles.data[vehid].rx, vehicles.data[vehid].ry, vehicles.data[vehid].rz)
+			setVehicleFuelTankExplodable(vehelement, true)
+			db.query('INSERT INTO vehicles (modelid,x,y,z,rx,ry,rz,numberplate,meta) VALUES ("'..db.escQS(vehicles.data[vehid].modelid)..'","'..db.escQS(vehicles.data[vehid].x)..'","'..db.escQS(vehicles.data[vehid].y)..'","'..db.escQS(vehicles.data[vehid].z)..'","'..db.escQS(vehicles.data[vehid].rx)..'","'..db.escQS(vehicles.data[vehid].ry)..'","'..db.escQS(vehicles.data[vehid].rz)..'","'..db.escQS(toJSON(vehicles.data[vehid].numberplate))..'","'..db.escQS(toJSON(vehicles.data[vehid].meta))..'")')
+			local tbl = db.query('SELECT * FROM vehicles ORDER BY id DESC LIMIT 1')
+			vehicles.data[vehid] = tbl[1]
+			vehicles.data[vehid].vehid = vehelement
+		end
 	end
 end
 

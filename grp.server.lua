@@ -99,6 +99,11 @@ function grp.get(Name)
 end
 
 function grp.containsUser(AcID, Group)
+	-- Schauen, ob Group und AcID ein echter Wert ist
+	if not Group or not AcID then
+		return false
+	end
+
 	-- Wenn Group als String übergeben wird ...
 	if type(Group) == 'string' then
 		Group = grp.get(Group) -- Group-Table holen!
