@@ -102,7 +102,7 @@ function firstperson.onStart()
 	addEventHandler('onClientRender', g_Root,
 	function()
 		local tickcount = getTickCount()
-		firstperson.fTime = tickcount - fTimeOld
+		firstperson.fTime = tickcount - firstperson.fTimeOld
 		firstperson.fTimeOld = tickcount	
 	end)
 	addEventHandler('onClientCursorMove', g_Root,
