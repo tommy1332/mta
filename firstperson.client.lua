@@ -112,7 +112,7 @@ function firstperson.onStart()
 		else
 			firstperson.cursorY = cursorY
 		end
-		firstperson.calculateCamera()
+		--firstperson.calculateCamera()
 	end)
 	addEvent('onHeadMove', true)
 	addEventHandler('onHeadMove', getRootElement(), 
