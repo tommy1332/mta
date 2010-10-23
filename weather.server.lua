@@ -16,6 +16,7 @@ weather =
 function weather.onStart()
 	log('weather.onStart')
 	setWeather(0)
+	weather.initDB()
 	weather.updateWeather()
 	weather.timer = setTimer(weather.updateWeather, 120000, 0)
 end
@@ -23,6 +24,15 @@ end
 function weather.onStop()
 	log('weather.onStop')
 	killTimer(weather.timer)
+end
+
+-- Initalisiere Datenbank
+function weather.initDB()
+	if(db.createTable('weather (id INT(10) PRIMARY KEY)')) then
+		return true
+	else
+		return false
+	end
 end
 
 base.addModule('weather', weather.onStart, weather.onStop, 'db')

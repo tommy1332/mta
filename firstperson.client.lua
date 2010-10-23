@@ -102,7 +102,7 @@ function firstperson.onStart()
 	addEventHandler('onClientRender', g_Root,
 	function()
 		local tickcount = getTickCount()
-		firstperson.fTime = tickcount - fTime_old
+		firstperson.fTime = tickcount - fTimeOld
 		firstperson.fTimeOld = tickcount	
 	end)
 	addEventHandler('onClientCursorMove', g_Root,
@@ -113,7 +113,6 @@ function firstperson.onStart()
 			firstperson.cursorY = cursorY
 		end
 		firstperson.calculateCamera()
-		triggerServerEvent('onCameraUpdate', g_Me, firstperson.headX + firstperson.lookAtX, firstperson.headY + firstperson.lookAtY, firstperson.headZ, firstperson.headX + firstperson.lookAtX*2, firstperson.headY + firstperson.lookAtY*2, firstperson.headZ + firstperson.lookAtZ*2, firstperson.roll)
 	end)
 	addEvent('onHeadMove', true)
 	addEventHandler('onHeadMove', getRootElement(), 
