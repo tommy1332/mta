@@ -58,8 +58,9 @@ function firstperson.calculateCamera()
 	local tmpcursorX, tmpcursorY = (0.5 - firstperson.cursorX) * 2.5, (0.5 - firstperson.cursorY) * 2.5
 	firstperson.viewAngleXY = firstperson.viewAngleXY + tmpcursorX
 	firstperson.viewAngleZ  = firstperson.viewAngleZ  + tmpcursorY
-	if not isMainMenuActive()
+	if not isMainMenuActive() then
 		setCursorPosition(screenSizeX/2, screenSizeY/2)
+	end
 	if(isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me)) then
 		local newVehicleAngleX, newVehicleAngleY, newVehicleAngleZ = getElementRotation(getPedOccupiedVehicle(g_Me))
 		newVehicleAngleZ = newVehicleAngleZ / 360.0
