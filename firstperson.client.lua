@@ -50,7 +50,7 @@ function firstperson.onAim(key, keystate)
 end
 
 function firstperson.calculateCamera()
-	firstperson.headX, firstperson.headY, firstperson.headZ = getPedBonePosition(g_Me, 8)
+		firstperson.headX, firstperson.headY, firstperson.headZ = getPedBonePosition(g_Me, 8)
 	if firstperson.lookup == true then
 		firstperson.headZ = firstperson.headZ - 0.11
 	end
@@ -58,7 +58,7 @@ function firstperson.calculateCamera()
 	local tmpcursorX, tmpcursorY = (0.5 - firstperson.cursorX) * 2.5, (0.5 - firstperson.cursorY) * 2.5
 	firstperson.viewAngleXY = firstperson.viewAngleXY + tmpcursorX
 	firstperson.viewAngleZ  = firstperson.viewAngleZ  + tmpcursorY
-	if not isMainMenuActive() then
+	if not isMainMenuActive() then	
 		setCursorPosition(screenSizeX/2, screenSizeY/2)
 	end
 	if(isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me)) then
@@ -75,7 +75,9 @@ function firstperson.calculateCamera()
 		end
 	else -- interpoliere roll ausserhalb des fahrzeuges wieder auf 0
 		if firstperson.roll > 0 then
-			firstperson.roll = firstperson.roll - (firstperson.roll*(firstperson.fTime*0.4))
+			firstperson.roll = Lerp(firstperson.roll, 0, 0.07)
+		else
+			firstperson.roll = Lerp(0, firstperson.roll, 0.07)		
 		end
 	end
 	if firstperson.viewAngleZ < 1.0 then
@@ -97,6 +99,7 @@ function firstperson.onStart()
 	addEventHandler('onClientPreRender', g_Root, 
 	function()
 		if firstperson.isEnabled and not guiGetVisible(mmenu.win) then
+			firstperson.calculateCamera()
 			setCameraMatrix(firstperson.headX + firstperson.lookAtX, firstperson.headY + firstperson.lookAtY, firstperson.headZ, firstperson.headX + firstperson.lookAtX*2, firstperson.headY + firstperson.lookAtY*2, firstperson.headZ + firstperson.lookAtZ*2, firstperson.roll, 90)
 		end
 	end)

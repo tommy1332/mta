@@ -1,3 +1,8 @@
+
+function Lerp(P0, P1, Factor)
+	return P0*(1.0-Factor) + P1*Factor
+end
+
 -- table table.copy( table tab )
 -- http://wiki.mtasa.com/wiki/Table.copy
 

@@ -39,28 +39,28 @@ base.addModule('weather', weather.onStart, weather.onStop, 'db')
 
 addEventHandler('onPlayerJoin', getRootElement(), 
 	function()
-		setWeather(weather.weatherid)
+		setWeather(weather.id)
 	end
 )
 
 function weather.updateWeather()
-	local tbl = db.query('SELECT weatherid FROM weather')
+	local tbl = db.query('SELECT id FROM weather')
 	if not tbl or #tbl == 0 then return end
 
 	for i = 1, #tbl, 1 do
-		if (tonumber(tbl[i].weatherid) >= 5 and tonumber(tbl[i].weatherid) <= 16) or tonumber(tbl[i].weatherid) == 35 then
-			weather.weatherid = 16
-		elseif (tonumber(tbl[i].weatherid) >= 0 and tonumber(tbl[i].weatherid) <= 4) or (tonumber(tbl[i].weatherid) >= 37 and tonumber(tbl[i].weatherid) <= 43) or (tonumber(tbl[i].weatherid) >= 45 and tonumber(tbl[i].weatherid) <= 47) then
-			weather.weatherid = 8
-		elseif tonumber(tbl[i].weatherid) == 20 then
-			weather.weatherid = 9
-		elseif (tonumber(tbl[i].weatherid) >= 17 and tonumber(tbl[i].weatherid) <= 18) or tonumber(tbl[i].weatherid) == 44 then
-			weather.weatherid = 41
-		elseif (tonumber(tbl[i].weatherid) >= 19 and tonumber(tbl[i].weatherid) <= 20) then
-			weather.weatherid = 6
+		if (tonumber(tbl[i].id) >= 5 and tonumber(tbl[i].id) <= 16) or tonumber(tbl[i].id) == 35 then
+			weather.id = 16
+		elseif (tonumber(tbl[i].id) >= 0 and tonumber(tbl[i].id) <= 4) or (tonumber(tbl[i].id) >= 37 and tonumber(tbl[i].id) <= 43) or (tonumber(tbl[i].id) >= 45 and tonumber(tbl[i].id) <= 47) then
+			weather.id = 8
+		elseif tonumber(tbl[i].id) == 20 then
+			weather.id = 9
+		elseif (tonumber(tbl[i].id) >= 17 and tonumber(tbl[i].id) <= 18) or tonumber(tbl[i].id) == 44 then
+			weather.id = 41
+		elseif (tonumber(tbl[i].id) >= 19 and tonumber(tbl[i].id) <= 20) then
+			weather.id = 6
 		else
-			weather.weatherid = 0
+			weather.id = 0
 		end
 	end
-	setWeatherBlended(weather.weatherid)
+	setWeatherBlended(weather.id)
 end
