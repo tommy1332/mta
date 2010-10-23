@@ -159,7 +159,7 @@ end
 
 -- Tool um zu pruefen, ob die Model ID existiert
 function vehicles.isValidModel(modelID)
-	if vehid > 399 and vehid < 612 then
+	if modelID > 399 and modelID < 612 then
 		return true
 	end
 	return false
@@ -167,7 +167,7 @@ end
 
 -- Kommando um ein beliebiges Fahrzeug zu erstellen
 function vehicles.commandVeh(playerSource, commandName, col1)
-	if isValidModel(tonumber(col1)) then
+	if vehicles.isValidModel(tonumber(col1)) then
 		local x, y, z = getElementPosition ( playerSource )
 		local vehid = #vehicles.data + 1
 		vehicles.data[vehid] = { id = vehid, modelid = col1, x = x, y = y, z = z, rx = 0.0, ry = 0.0, rz = 0.0, numberplate = {}, meta = {} }

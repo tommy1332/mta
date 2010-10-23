@@ -104,7 +104,7 @@ function firstperson.onStart()
 		local tickcount = getTickCount()
 		firstperson.fTime = tickcount - fTime_old
 		firstperson.fTimeOld = tickcount	
-	end
+	end)
 	addEventHandler('onClientCursorMove', g_Root,
 	function(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
 		if firstperson.lookup == false then
