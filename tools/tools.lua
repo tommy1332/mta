@@ -1,3 +1,37 @@
+function Min(A,B)
+	if A < B then
+		return A
+	else
+		return B
+	end
+end
+
+function Max(A,B)
+	if A > B then
+		return A
+	else
+		return B
+	end
+end
+
+function BoundBy(V,A,B)
+	if V < A then
+		return A
+	elseif V > B then
+		return B
+	end
+	return V
+end
+
+function Inside(V,A,B)
+	return V > A and V < B
+end
+
+function Swap(A,B)
+	local c = A
+	A = B
+	B = c
+end
 
 function Lerp(P0, P1, Factor)
 	return P0*(1.0-Factor) + P1*Factor

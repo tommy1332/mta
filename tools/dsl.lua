@@ -26,7 +26,7 @@ Kommentar:
 dsl = {}
 
 function createDSL()
-	return dsl
+	return table.copy(dsl)
 end
 
 function dsl:add(Key, Value, ...)
