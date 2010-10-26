@@ -101,9 +101,10 @@ function ego.rotateHead( X , Y )
 	log("rotate head "..X.." "..Y)
 	ego.viewAngle.x = ego.viewAngle.x + X
 	ego.viewAngle.y = ego.viewAngle.y + Y
+	log("viewAngle = "..ego.viewAngle.x.." "..ego.viewAngle.y)
 	
 	local lol = Angle2Vector(ego.viewAngle.x, ego.viewAngle.y)
-	log(lol.x.." "..lol.y.." "..lol.z)
+	log("lookAt = "..lol.x.." "..lol.y.." "..lol.z)
 end
 
 function ego.onStart()
@@ -142,7 +143,8 @@ function ego.onStart()
 		if not ego.isEnabled or guiGetVisible(mmenu.win) or isMainMenuActive() --[[ und so weiter ... toolfunktion ? ]] then
 			return
 		end
-		ego.rotateHead(cursorX-0.5, cursorY-0.5)
+		log("absolute = "..(absoluteX-(g_ScreenSize.x/2)).." "..(absoluteY-(g_ScreenSize.y/2)))
+		ego.rotateHead(cursorX, cursorY)
 		setCursorPosition(g_ScreenSize.x/2, g_ScreenSize.y/2)
 	end)
 	
