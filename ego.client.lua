@@ -17,7 +17,7 @@
 
 ego =
 {
-	isEnabled = false,
+	isEnabled = true,
 	viewAngle = Vector(0,0),
 	lastVehicleAngle = Vector(0,0,0),
 	lookAt = Vector(1,1,1),
@@ -53,6 +53,7 @@ end
 function ego.onAim(key, keystate)
 	if keystate == 'down' then
 		if not isPedInVehicle(g_Me) and getPedWeapon(g_Me) ~= 0 and getPedTotalAmmo(g_Me) ~= 0 then
+			log("ego.isEnabled = false")
 			ego.isEnabled = false
 			setCameraTarget(g_Me, g_Me)
 		end
@@ -97,6 +98,7 @@ function ego.calculateCamera()
 end
 
 function ego.rotateHead( X , Y )
+	log("rotate head")
 	ego.viewAngle.x = ego.viewAngle.x + X
 	ego.viewAngle.y = ego.viewAngle.y + Y
 end
@@ -133,7 +135,7 @@ function ego.onStart()
 	
 	addEventHandler('onClientCursorMove', g_Root,
 	function(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
-		if not ego.isEnabled or guiGetVisible(mmenu.win) then
+		if not ego.isEnabled or guiGetVisible(mmenu.win) or isMainMenuActive() --[[ und so weiter ... toolfunktion ? ]] then
 			return
 		end
 		ego.rotateHead(cursorX-(g_ScreenSize.x/2), cursorY-(g_ScreenSize.y/2))
