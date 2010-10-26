@@ -98,7 +98,7 @@ function ego.calculateCamera()
 end
 
 function ego.rotateHead( X , Y )
-	log("rotate head")
+	log("rotate head "..X.." "..Y)
 	ego.viewAngle.x = ego.viewAngle.x + X
 	ego.viewAngle.y = ego.viewAngle.y + Y
 end
@@ -111,6 +111,7 @@ function ego.onStart()
 	log('ego.onStart')
 
 	setCameraClip(false, false)
+	setCursorPosition(g_ScreenSize.x/2, g_ScreenSize.y/2)
 	
 	addEventHandler('onClientPreRender', g_Root, 
 	function()
@@ -132,7 +133,7 @@ function ego.onStart()
 		ego.fTime = tickcount - ego.fTimeOld
 		ego.fTimeOld = tickcount	
 	end)
-	
+
 	addEventHandler('onClientCursorMove', g_Root,
 	function(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
 		if not ego.isEnabled or guiGetVisible(mmenu.win) or isMainMenuActive() --[[ und so weiter ... toolfunktion ? ]] then
