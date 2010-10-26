@@ -23,6 +23,9 @@
 	<script src="tools/tools.lua" />
 	<script src="tools/tools.lua" type="client" />
 	
+	<script src="tools/vec.lua" />
+	<script src="tools/vec.lua" type="client" />
+	
 	<script src="tools/client_anim.lua" type="client"/>
 	<script src="tools/textlib.lua" type="client"/>
 	<script src="tools/textlib_anim.lua" type="client"/>
