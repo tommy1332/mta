@@ -40,7 +40,7 @@ end
 function ego.addOffset(Name, Pos, Rot)
 	viewOffset[name] = 
 	{
-		pos = pos + Pos
+		pos = pos + Pos,
 		rot = rot + Rot
 	}
 	ego.updateOffset()
@@ -163,12 +163,7 @@ base.addModule('ego', ego.onStart, ego.onStop, 'mmenu')
 function Angle2Vector(u,v)
 	u = u * 2 * math.pi
 	v = -1 * (v - 0.5) * math.pi
-	return Vector
-	(
-		math.cos(u) * math.cos(v),
-		math.sin(u) * math.cos(v),
-		math.sin(v)
-	)
+	return Vector( math.cos(u) * math.cos(v), math.sin(u) * math.cos(v), math.sin(v) )
 end
 
 --[[ Altes Zeug
