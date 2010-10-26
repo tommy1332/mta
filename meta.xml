@@ -68,7 +68,7 @@
 	
 	<script src="carmods.client.lua" type="client" />
 	
-	<script src="firstperson.client.lua" type="client" />
+	<script src="ego.client.lua" type="client" />
 	<script src="health.client.lua" type="client" />
 	
 	<!-- ^- Scripte hier nach Wichtigkeit sortieren! -->

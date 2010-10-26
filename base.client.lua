@@ -21,7 +21,7 @@ g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Res = getThisResource()
 g_Player = getLocalPlayer()
-
+g_ScreenSize = Vector(guiGetScreenSize())
 
 base =
 {
