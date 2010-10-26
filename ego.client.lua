@@ -133,6 +133,9 @@ function ego.onStart()
 	
 	addEventHandler('onClientCursorMove', g_Root,
 	function(cursorX, cursorY, absoluteX, absoluteY, worldX, worldY, worldZ)
+		if not ego.isEnabled or guiGetVisible(mmenu.win) then
+			return
+		end
 		ego.rotateHead(cursorX-(g_ScreenSize.x/2), cursorY-(g_ScreenSize.y/2))
 		setCursorPosition(g_ScreenSize.x/2, g_ScreenSize.y/2)
 	end)
