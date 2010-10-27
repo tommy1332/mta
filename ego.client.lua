@@ -92,19 +92,15 @@ function ego.calculateCamera()
 		ego.viewAngleZ = 2.0
 	end
 	]]
-	
-	ego.lookAt = Angle2Vector(ego.viewAngle.x, ego.viewAngle.y)
+
+	ego.lookAt = ego.head + Angle2Vector(ego.viewAngle.x, ego.viewAngle.y)
 	-- Vllt. auch eine Möglichkeit den Sichtbereich zu begrenzen?
 end
 
-function ego.rotateHead( X , Y )
-	log("rotate head "..X.." "..Y)
-	ego.viewAngle.x = ego.viewAngle.x + X
-	ego.viewAngle.y = ego.viewAngle.y + Y
-	log("viewAngle = "..ego.viewAngle.x.." "..ego.viewAngle.y)
+function ego.rotateHead( X , Y ) 
+	ego.viewAngle.x = Wrap( ego.viewAngle.x - (X-0.5)*4 , 0 , 2*math.pi )
+	ego.viewAngle.y = BoundBy( ego.viewAngle.y + (Y-0.5)*4 , (0.5+0.01)*math.pi , (1.5-0.01)*math.pi )
 	
-	local lol = Angle2Vector(ego.viewAngle.x, ego.viewAngle.y)
-	log("lookAt = "..lol.x.." "..lol.y.." "..lol.z)
 end
 
 function ego.onStart()
@@ -143,7 +139,7 @@ function ego.onStart()
 		if not ego.isEnabled or guiGetVisible(mmenu.win) or isMainMenuActive() --[[ und so weiter ... toolfunktion ? ]] then
 			return
 		end
-		log("absolute = "..(absoluteX-(g_ScreenSize.x/2)).." "..(absoluteY-(g_ScreenSize.y/2)))
+		--log("absolute = "..(absoluteX-(g_ScreenSize.x/2)).." "..(absoluteY-(g_ScreenSize.y/2)))
 		ego.rotateHead(cursorX, cursorY)
 		setCursorPosition(g_ScreenSize.x/2, g_ScreenSize.y/2)
 	end)
@@ -169,11 +165,9 @@ end
 
 base.addModule('ego', ego.onStart, ego.onStop, 'mmenu')
 
-
-
 function Angle2Vector(u,v)
-	u = u * 2 * math.pi
-	v = -1 * (v - 0.5) * math.pi
+	--u = u * 2 * math.pi
+	--v = -1 * (v - 0.5) * math.pi
 	return Vector( math.cos(u) * math.cos(v), math.sin(u) * math.cos(v), math.sin(v) )
 end
 

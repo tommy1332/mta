@@ -33,6 +33,24 @@ function Swap(A,B)
 	B = c
 end
 
+function Wrap(V,A,B)
+	-- if not B - A then return A end
+	
+	while V < A do
+		V = V + ( B - A )
+	end
+
+	while V >= B do
+		V = V - ( B - A )
+	end
+
+	return V
+end
+
+
+
+
+
 function Lerp(P0, P1, Factor)
 	return P0*(1.0-Factor) + P1*Factor
 end

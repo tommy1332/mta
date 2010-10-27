@@ -1,11 +1,11 @@
---[[ _vector (_vec)
+--[[ Vector (vec)
 
 Beschreibung:
 	Tolle generische Vektor Klasse :o
 
 
 Funktionen:
-	_vector( < Initiale Werte (geben auch die Dimension an) > ) - gibt einen N-dimensionalen Vektor zurück
+	Vector( < Initiale Werte (geben auch die Dimension an) > ) - gibt einen N-dimensionalen Vektor zurück
 ]]
 
 vec = {}
@@ -26,14 +26,15 @@ end
 function _vec.operate( A , B , F )
 	local r = Vector()
 	for i = 1, Min(#A,#B) do
-		r[i] = F(A[i],B[i])
+		rawset( r , i , F(A[i],B[i]) )
 	end
+	
 	if #A ~= #B then
 		if #B > #A then
 			Swap(A,B)
 		end
 		for i = #B, #A do
-			r[i] = A[i]
+			rawset( r , i , A[i] )
 		end
 	end
 	return r
@@ -92,7 +93,20 @@ function _vec.__newindex( V , K , X )
 	elseif K == 'z' then rawset(V,3,X)
 	elseif K == 'r' then rawset(V,1,X)
 	elseif K == 'g' then rawset(V,2,X)
-	else --[[ K == 'b' ]] rawset(V,3,X)
+	elseif K == 'b' then rawset(V,3,X)
+	else rawset(V,K,X)
 	end
 	return X
+end
+
+function _vec.__tostring( V )
+	local s = "[ "
+	for i = 1, #V do
+		if i == 1 then
+			s = s..tostring(V[i])
+		else
+			s = s.." | "..tostring(V[i])
+		end
+	end
+	return s.." ]"
 end

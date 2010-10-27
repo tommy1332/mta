@@ -78,9 +78,9 @@ end
 addEventHandler('onClientResourceStop', g_Root, base.onResourceStop)
 
 function log(Msg)
-	if not base.serverstopped then
-		triggerServerEvent("onClientLog", g_Player, Msg)
-	else
-		outputDebugString('['..getPlayerName(source)..'] '..Msg)
-	end
+	--if not base.serverstopped then
+		triggerServerEvent("onClientLog", g_Player, tostring(Msg))
+	--else
+		outputDebugString(tostring(Msg))
+	--end
 end
