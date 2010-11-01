@@ -34,14 +34,89 @@ rootElement = getRootElement()
 
 vehicles = 
 {
-	data = {},
-	settings = {}
+	data =
+	{
+
+	}
 }
 
 function vehicles.onStart()
 	log('vehicles.onStart')
 	vehicles.initDB()
 	vehicles.loadCars()
+	setTimer(function()
+			for k,v in pairs(vehicles.data) do
+				if v.meta.blinker ~= 0 then
+					local player = getVehicleController(v.vehid)
+					if player then
+						triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'blinker')
+					end
+					for i = 1, getVehicleMaxPassengers(v.vehid) + 1, 1 do
+						local passenger = getVehicleOccupant(v.vehid, i)
+						if passenger then
+							triggerClientEvent(passenger, 'onServerRequestPlaySound', rootElement, 'blinker')
+						end
+					end
+					if v.meta.blinkerstate == false then
+						if v.meta.blinker == 2 then
+							if v.meta.lights == 1 then
+								setVehicleLightState(v.vehid, 0, 1)
+								setVehicleLightState(v.vehid, 3, 1)
+							end
+							setVehicleLightState(v.vehid, 1, 1)
+							setVehicleLightState(v.vehid, 2, 1)
+						elseif v.meta.blinker == 1 then
+							if v.meta.lights == 1 then
+								setVehicleLightState(v.vehid, 1, 1)
+								setVehicleLightState(v.vehid, 2, 1)
+							end
+							setVehicleLightState(v.vehid, 0, 1)
+							setVehicleLightState(v.vehid, 3, 1)
+						elseif v.meta.blinker == 3 then
+							setVehicleLightState(v.vehid, 0, 1)
+							setVehicleLightState(v.vehid, 1, 1)
+							setVehicleLightState(v.vehid, 2, 1)
+							setVehicleLightState(v.vehid, 3, 1)
+						end
+					else
+						if v.meta.blinker == 2 then
+							if v.meta.lights == 1 then
+								setVehicleLightState(v.vehid, 0, 1)
+								setVehicleLightState(v.vehid, 3, 1)
+							end
+							setVehicleLightState(v.vehid, 1, 0)
+							setVehicleLightState(v.vehid, 2, 0)
+						elseif v.meta.blinker == 1 then
+							if v.meta.lights == 1 then
+								setVehicleLightState(v.vehid, 1, 1)
+								setVehicleLightState(v.vehid, 2, 1)
+							end
+							setVehicleLightState(v.vehid, 0, 0)
+							setVehicleLightState(v.vehid, 3, 0)
+						elseif v.meta.blinker == 3 then
+							setVehicleLightState(v.vehid, 0, 0)
+							setVehicleLightState(v.vehid, 1, 0)
+							setVehicleLightState(v.vehid, 2, 0)
+							setVehicleLightState(v.vehid, 3, 0)
+						end
+					end
+					setVehicleOverrideLights(v.vehid, 2)
+					if player then 
+						triggerClientEvent(player, 'onServerRequestBlinkerChange', rootElement, v.meta.blinker, v.meta.blinkerstate) 
+					end
+					v.meta.blinkerstate = not v.meta.blinkerstate
+				end
+			end
+		end, 800, 0)
+
+	addCommandHandler("veh", vehicles.commandVeh)
+	addCommandHandler("lock", vehicles.commandLock)
+	addCommandHandler("taxi", vehicles.commandTaxi)
+	addEventHandler("onVehicleEnter", rootElement, vehicles.configurePlayer)
+	addEventHandler("onVehicleExit", rootElement, vehicles.unconfigurePlayer)
+	addEventHandler("onVehicleDamage", rootElement, vehicles.damagePlayer)
+	addEventHandler("onVehicleStartEnter", rootElement, vehicles.tryEnter)
+	addEventHandler("onVehicleStartExit", rootElement, vehicles.tryExit)
 end
 
 function vehicles.onStop()
@@ -51,69 +126,6 @@ end
 
 base.addModule('vehicles', vehicles.onStart, vehicles.onStop, 'db')
 
-setTimer(
-	function()
-		for k,v in pairs(vehicles.settings) do
-			if v.blinker ~= 0 then
-				local player = getVehicleController(vehicles.data[k].vehid)
-				if player then
-					triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'blinker')
-				end
-				for i = 1, getVehicleMaxPassengers(vehicles.data[k].vehid) + 1, 1 do
-					local passenger = getVehicleOccupant(vehicles.data[k].vehid, i)
-					if passenger then
-						triggerClientEvent(passenger, 'onServerRequestPlaySound', rootElement, 'blinker')
-					end
-				end
-				if v.blinkerstate == false then
-					if v.blinker == 2 then
-						if v.lights == 1 then
-							setVehicleLightState(vehicles.data[k].vehid, 0, 1)
-							setVehicleLightState(vehicles.data[k].vehid, 3, 1)
-						end
-						setVehicleLightState(vehicles.data[k].vehid, 1, 1)
-						setVehicleLightState(vehicles.data[k].vehid, 2, 1)
-					elseif v.blinker == 1 then
-						if v.lights == 1 then
-							setVehicleLightState(vehicles.data[k].vehid, 1, 1)
-							setVehicleLightState(vehicles.data[k].vehid, 2, 1)
-						end
-						setVehicleLightState(vehicles.data[k].vehid, 0, 1)
-						setVehicleLightState(vehicles.data[k].vehid, 3, 1)
-					elseif v.blinker == 3 then
-						setVehicleLightState(vehicles.data[k].vehid, 0, 1)
-						setVehicleLightState(vehicles.data[k].vehid, 1, 1)
-						setVehicleLightState(vehicles.data[k].vehid, 2, 1)
-						setVehicleLightState(vehicles.data[k].vehid, 3, 1)
-					end
-				else
-					if v.blinker == 2 then
-						if v.lights == 1 then
-							setVehicleLightState(vehicles.data[k].vehid, 0, 1)
-							setVehicleLightState(vehicles.data[k].vehid, 3, 1)
-						end
-						setVehicleLightState(vehicles.data[k].vehid, 1, 0)
-						setVehicleLightState(vehicles.data[k].vehid, 2, 0)
-					elseif v.blinker == 1 then
-						if v.lights == 1 then
-							setVehicleLightState(vehicles.data[k].vehid, 1, 1)
-							setVehicleLightState(vehicles.data[k].vehid, 2, 1)
-						end
-						setVehicleLightState(vehicles.data[k].vehid, 0, 0)
-						setVehicleLightState(vehicles.data[k].vehid, 3, 0)
-					elseif v.blinker == 3 then
-						setVehicleLightState(vehicles.data[k].vehid, 0, 0)
-						setVehicleLightState(vehicles.data[k].vehid, 1, 0)
-						setVehicleLightState(vehicles.data[k].vehid, 2, 0)
-						setVehicleLightState(vehicles.data[k].vehid, 3, 0)
-					end
-				end
-				setVehicleOverrideLights(vehicles.data[k].vehid, 2)
-				if player then triggerClientEvent(player, 'onServerRequestBlinkerChange', rootElement, v.blinker, v.blinkerstate) end
-				v.blinkerstate = not v.blinkerstate
-			end
-		end
-	end, 800, 0)
 	
 -- Initalisiere Datenbank
 function vehicles.initDB()
@@ -143,7 +155,7 @@ function vehicles.loadCars()
 	
 	for k, v in pairs(vehicles.data) do
 			v.vehid = createVehicle(v.modelid, v.x, v.y, v.z, v.rx, v.ry, v.rz, v.numberplate)
-			vehicles.settings[k] = { lights = 1, engine = false, handbrake = true, blinker = 0, blinkerstate = false }
+			v.meta = fromJSON(v.meta)
 			setElementID(v.vehid, 'veh ' .. k)
 	end
 end
@@ -152,8 +164,7 @@ end
 function vehicles.unloadCars()
 	for k,v in pairs(vehicles.data) do
 		destroyElement(v.vehid)
-		v = nil
-		vehicles.settings[k] = nil
+		vehicles.data[k] = nil
 	end
 end
 
@@ -170,8 +181,24 @@ function vehicles.commandVeh(playerSource, commandName, col1)
 	if vehicles.isValidModel(tonumber(col1)) then
 		local x, y, z = getElementPosition ( playerSource )
 		local vehid = #vehicles.data + 1
-		vehicles.data[vehid] = { id = vehid, modelid = col1, x = x, y = y, z = z, rx = 0.0, ry = 0.0, rz = 0.0, numberplate = {}, meta = {} }
-		vehicles.settings[vehid] = { lights = 1, engine = false, handbrake = true, blinker = 0, blinkerstate = false }
+		vehicles.data[vehid] = { 
+						id = vehid, 
+						modelid = col1, 
+						x = x, 
+						y = y, 
+						z = z, 
+						rx = 0.0, 
+						ry = 0.0, 
+						rz = 0.0, 
+						numberplate = {}, 
+						meta = {
+								lights = 1,
+								engine = false,
+								handbrake = true,
+								blinker = 0,
+								blinkerstate = false
+							}
+					}
 		local vehelement = createVehicle(vehicles.data[vehid].modelid, x, y, z)
 		setElementID(vehelement, 'veh ' .. vehid)
 		if vehelement then
@@ -180,6 +207,7 @@ function vehicles.commandVeh(playerSource, commandName, col1)
 			db.query('INSERT INTO vehicles (modelid,x,y,z,rx,ry,rz,numberplate,meta) VALUES ("'..db.escQS(vehicles.data[vehid].modelid)..'","'..db.escQS(vehicles.data[vehid].x)..'","'..db.escQS(vehicles.data[vehid].y)..'","'..db.escQS(vehicles.data[vehid].z)..'","'..db.escQS(vehicles.data[vehid].rx)..'","'..db.escQS(vehicles.data[vehid].ry)..'","'..db.escQS(vehicles.data[vehid].rz)..'","'..db.escQS(toJSON(vehicles.data[vehid].numberplate))..'","'..db.escQS(toJSON(vehicles.data[vehid].meta))..'")')
 			local tbl = db.query('SELECT * FROM vehicles ORDER BY id DESC LIMIT 1')
 			vehicles.data[vehid] = tbl[1]
+			vehicles.data[vehid].meta = fromJSON(vehicles.data[vehid].meta)
 			vehicles.data[vehid].vehid = vehelement
 		end
 	end
@@ -188,15 +216,14 @@ end
 -- Kommando um ein Fahrzeug abzuschlieﬂen / aufzuschlieﬂen
 function vehicles.commandLock(playerSource) -- TODO: Maybe add Sound
 	local veh = getPedOccupiedVehicle(playerSource)
-	if veh == false then
+	if not veh then
 		local x, y, z = getElementPosition(playerSource)
 		for k,v in pairs(vehicles.data) do
 			if getDistanceBetweenPoints3D(x, y, z, v.x, v.y, v.z) < 5.0 then
 				veh = v.vehid
 			end
 		end
-	end
-	if veh then
+	else
 		if isVehicleLocked(veh) then
 			setVehicleLocked(veh, false)
 		else
@@ -217,7 +244,7 @@ function vehicles.commandTaxi(playerSource)
 	end
 end
 
-function vehicles.keyHandling(player, key, keyState) -- TODO: Maybe add Sound
+function vehicles.keyHandling(player, key, keyState)
 	local playerVehicle = getPedOccupiedVehicle(player)
 	if keyState == 'down' then
 		if key == 'l' then
@@ -230,26 +257,26 @@ function vehicles.keyHandling(player, key, keyState) -- TODO: Maybe add Sound
 				end
 				triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'switch')
 				if getVehicleController(playerVehicle) == player then
-					if vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights == 1 then
+					if vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights == 1 then
 						setVehicleOverrideLights(playerVehicle, 2)
-						vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights = 2
+						vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights = 2
 					else
 						setVehicleOverrideLights(playerVehicle, 1)
-						vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights = 1
+						vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights = 1
 					end
 				end
-				triggerClientEvent(player, 'onServerRequestLightChange', rootElement, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights)
+				triggerClientEvent(player, 'onServerRequestLightChange', rootElement, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights)
 			end
 		elseif key == 'm' then
 			if playerVehicle then
 				if getVehicleController(playerVehicle) == player then
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].engine = not vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].engine
-					setVehicleEngineState(playerVehicle, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].engine)
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.engine = not vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.engine
+					setVehicleEngineState(playerVehicle, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.engine)
 				end
 			end
 		elseif key == 'space' then
 			if playerVehicle then
-				vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].handbrake = not vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].handbrake
+				vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.handbrake = not vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.handbrake
 				triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'handbrake')
 				for i = 1, getVehicleMaxPassengers(playerVehicle) + 1, 1 do
 					local passenger = getVehicleOccupant(playerVehicle, i)
@@ -257,52 +284,52 @@ function vehicles.keyHandling(player, key, keyState) -- TODO: Maybe add Sound
 						triggerClientEvent(passenger, 'onServerRequestPlaySound', rootElement, 'handbrake')
 					end
 				end
-				setControlState(player, 'handbrake', vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].handbrake)
-				triggerClientEvent(player, 'onServerRequestHandbrakeChange', rootElement, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].handbrake)
+				setControlState(player, 'handbrake', vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.handbrake)
+				triggerClientEvent(player, 'onServerRequestHandbrakeChange', rootElement, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.handbrake)
 			end
 		elseif key == 'num_6' then
 			if playerVehicle then
 				triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'switch')
-				if vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker == 2 then
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 0
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinkerstate = false
+				if vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker == 2 then
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 0
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinkerstate = true
 					for i = 0, 3, 1 do
 						setVehicleLightState(playerVehicle, i, 0)
 					end
 					triggerClientEvent(player, 'onServerRequestBlinkerChange', rootElement, 0, false)
-					setVehicleOverrideLights(playerVehicle, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights)
+					setVehicleOverrideLights(playerVehicle, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights)
 				else
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 2
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 2
 				end
 			end
 		elseif key == 'num_4' then
 			if playerVehicle then
 				triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'switch')
-				if vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker == 1 then
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 0
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinkerstate = false
+				if vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker == 1 then
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 0
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinkerstate = true
 					for i = 0, 3, 1 do
 						setVehicleLightState(playerVehicle, i, 0)
 					end
 					triggerClientEvent(player, 'onServerRequestBlinkerChange', rootElement, 0, false)
-					setVehicleOverrideLights(playerVehicle, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights)
+					setVehicleOverrideLights(playerVehicle, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights)
 				else
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 1
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 1
 				end
 			end
 		elseif key == 'num_5' then
 			if playerVehicle then
 				triggerClientEvent(player, 'onServerRequestPlaySound', rootElement, 'switch')
-				if vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker == 3 then
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 0
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinkerstate = false
+				if vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker == 3 then
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 0
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinkerstate = true
 					for i = 0, 3, 1 do
 						setVehicleLightState(playerVehicle, i, 0)
 					end
 					triggerClientEvent(player, 'onServerRequestBlinkerChange', rootElement, 0, false)
-					setVehicleOverrideLights(playerVehicle, vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].lights)
+					setVehicleOverrideLights(playerVehicle, vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.lights)
 				else
-					vehicles.settings[vehicles.getVehicleIDfromElement(playerVehicle)].blinker = 3
+					vehicles.data[vehicles.getVehicleIDfromElement(playerVehicle)].meta.blinker = 3
 				end
 			end
 		end
@@ -311,17 +338,17 @@ end
 
 function vehicles.configurePlayer(thePlayer, seat, jacked)
 	if seat == 0 then
-		setVehicleEngineState(source, vehicles.settings[vehicles.getVehicleIDfromElement(source)].engine)
-		if vehicles.settings[vehicles.getVehicleIDfromElement(source)].lights == 2 then
+		setVehicleEngineState(source, vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.engine)
+		if vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.lights == 2 then
 			setVehicleOverrideLights(source, 2)
 		else
 			setVehicleOverrideLights(source, 1)
 		end
 		toggleControl(thePlayer, "handbrake", false)
-		setControlState(thePlayer, 'handbrake', vehicles.settings[vehicles.getVehicleIDfromElement(source)].handbrake)
-		triggerClientEvent(thePlayer, 'onServerRequestHandbrakeChange', rootElement, vehicles.settings[vehicles.getVehicleIDfromElement(source)].handbrake)
-		triggerClientEvent(thePlayer, 'onServerRequestBlinkerChange', rootElement, vehicles.settings[vehicles.getVehicleIDfromElement(source)].blinker, vehicles.settings[vehicles.getVehicleIDfromElement(source)].blinkerstate)
-		triggerClientEvent(thePlayer, 'onServerRequestLightChange', rootElement, vehicles.settings[vehicles.getVehicleIDfromElement(source)].lights)
+		setControlState(thePlayer, 'handbrake', vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.handbrake)
+		triggerClientEvent(thePlayer, 'onServerRequestHandbrakeChange', rootElement, vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.handbrake)
+		triggerClientEvent(thePlayer, 'onServerRequestBlinkerChange', rootElement, vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.blinker, vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.blinkerstate)
+		triggerClientEvent(thePlayer, 'onServerRequestLightChange', rootElement, vehicles.data[vehicles.getVehicleIDfromElement(source)].meta.lights)
 		bindKey(thePlayer, "l", "down", vehicles.keyHandling)
 		bindKey(thePlayer, "m", "down", vehicles.keyHandling)
 		bindKey(thePlayer, "space", "down", vehicles.keyHandling)
@@ -361,11 +388,3 @@ function vehicles.tryExit(player, seat, jacked)
 	unbindKey(player, 'num_5', 'down', vehicles.keyHandling)
 end
 
-addCommandHandler("veh", vehicles.commandVeh)
-addCommandHandler("lock", vehicles.commandLock)
-addCommandHandler("taxi", vehicles.commandTaxi)
-addEventHandler("onVehicleEnter", rootElement, vehicles.configurePlayer)
-addEventHandler("onVehicleExit", rootElement, vehicles.unconfigurePlayer)
-addEventHandler("onVehicleDamage", rootElement, vehicles.damagePlayer)
-addEventHandler("onVehicleStartEnter", rootElement, vehicles.tryEnter)
-addEventHandler("onVehicleStartExit", rootElement, vehicles.tryExit)

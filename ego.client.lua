@@ -8,6 +8,12 @@
 		ego.onStop()
 		ego.calculateCamera()
 
+	Beschreibung:
+		restrictFn kann eine Funktion enthalten, welche den Sichtbereich begrenzt.
+		Diese Funktion wird aufgerufen sobald die Maus bewegt wird
+		und bekommt die neuen Rotationswerte übergeben.
+		Jetzt kann diese mit den Werten arbeiten und am Ende neue Werte als Tuple zurückgeben.
+
 ]]
 
 -- Keine Spezialbehandlung für "vorbeugen" etc., vllt. so ein allgemeiner Offset-Stack .. eh? <- Warum Stack? Liste währ auch möglich oder?
@@ -18,15 +24,16 @@
 ego =
 {
 	isEnabled = true,
-	viewAngle = Vector(0,0),
-	lastVehicleAngle = Vector(0,0,0),
+	viewAngle = Vector(0,0,0),
+	vehicleAngle = Vector(0,0,0),
 	lookAt = Vector(1,1,1),
 	head = Vector(0,0,0),
 	roll = 0.0,
 	fTimeOld = 0.0,
 	fTime = 0.0,
 	viewOffset = {},
-	totalOffset = { pos = Vector(0,0,0), rot = Vector(0,0,0) }
+	totalOffset = { pos = Vector(0,0,0), rot = Vector(0,0,0) },
+	restrictFn = false
 }
 
 function ego.updateOffset()
@@ -54,7 +61,7 @@ function ego.onAim(key, keystate)
 	if keystate == 'down' then
 		if not isPedInVehicle(g_Me) and getPedWeapon(g_Me) ~= 0 and getPedTotalAmmo(g_Me) ~= 0 then
 			log("ego.isEnabled = false")
-			ego.isEnabled = false
+			ego.isEnabled = false -- TODO: Proxyfunktionen währen toll. Damit könnte dann auch setCameraTarget impliziert werden. ^^
 			setCameraTarget(g_Me, g_Me)
 		end
 	else
@@ -66,6 +73,23 @@ function ego.calculateCamera()
 	ego.head = Vector(getPedBonePosition(g_Me, 8))
 	ego.head.z = ego.head.z + 0.2 -- allgemeines offset, wegen Bone und so
 
+	if isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
+		ego.vehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
+		ego.vehicleAngle.x = ego.vehicleAngle.x / 180 * math.pi
+		ego.vehicleAngle.y = ego.vehicleAngle.y / 180 * math.pi
+		ego.vehicleAngle.z = ego.vehicleAngle.z / 180 * math.pi
+		local c = ego.vehicleAngle.y
+		ego.vehicleAngle.y = ego.vehicleAngle.z
+		ego.vehicleAngle.z = c
+		--log(ego.vehicleAngle) -- debug
+	else -- Ausserhalb des Fahrzeuges, roll Wert auf 0 interpolieren
+		if ego.viewAngle.z > 0 then
+			ego.viewAngle.z = Lerp(ego.viewAngle.z, 0, 0.07*ego.fTime)
+		elseif ego.viewAngle.z < 0 then
+			ego.viewAngle.z = Lerp(0, ego.viewAngle.z, 0.07*ego.fTime)
+		end
+	end
+	
 	--[[
 	if(isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me)) then -- wenn wir in einem Fahrzeug sind, beziehen wir dessen Rotation mit ein
 		local newVehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
@@ -92,15 +116,22 @@ function ego.calculateCamera()
 		ego.viewAngleZ = 2.0
 	end
 	]]
-
-	ego.lookAt = ego.head + Angle2Vector(ego.viewAngle.x, ego.viewAngle.y)
-	-- Vllt. auch eine Möglichkeit den Sichtbereich zu begrenzen?
+	log("vehicleAngle:" .. tostring(ego.vehicleAngle))
+	local angle = ego.viewAngle + ego.vehicleAngle + ego.totalOffset.rot
+	log("angle: " .. tostring(angle))
+	ego.lookAt = ego.head + Angle2Vector(angle.x, angle.y) + ego.totalOffset.pos
+	-- ego.roll = angle.z
 end
 
-function ego.rotateHead( X , Y ) 
-	ego.viewAngle.x = Wrap( ego.viewAngle.x - (X-0.5)*4 , 0 , 2*math.pi )
-	ego.viewAngle.y = BoundBy( ego.viewAngle.y + (Y-0.5)*4 , (0.5+0.01)*math.pi , (1.5-0.01)*math.pi )
-	
+function ego.rotateHead( X , Y )
+	X = Wrap( ego.viewAngle.x - (X-0.5)*4 , 0 , 2*math.pi )
+	Y = BoundBy( ego.viewAngle.y + (Y-0.5)*4 , (0.5+0.01)*math.pi , (1.5-0.01)*math.pi )
+	if not ego.restrictFn then
+		ego.viewAngle.x = X
+		ego.viewAngle.y = Y
+	else
+		ego.viewAngle.x, ego.viewAngle.y = ego.restrictFn(X,Y)
+	end
 end
 
 function ego.onStart()
@@ -165,9 +196,7 @@ end
 
 base.addModule('ego', ego.onStart, ego.onStop, 'mmenu')
 
-function Angle2Vector(u,v)
-	--u = u * 2 * math.pi
-	--v = -1 * (v - 0.5) * math.pi
+function Angle2Vector(u,v) -- Sollte irgendwann mal in tools/tools.lua oder in tools/vec.lua als Memberfunktion ;)
 	return Vector( math.cos(u) * math.cos(v), math.sin(u) * math.cos(v), math.sin(v) )
 end
 
