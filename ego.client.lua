@@ -73,15 +73,14 @@ function ego.calculateCamera()
 	ego.head = Vector(getPedBonePosition(g_Me, 8))
 	ego.head.z = ego.head.z + 0.2 -- allgemeines offset, wegen Bone und so
 
-	if isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
+	if isPedInVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
 		ego.vehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
-		ego.vehicleAngle.x = ego.vehicleAngle.x / 180 * math.pi
-		ego.vehicleAngle.y = ego.vehicleAngle.y / 180 * math.pi
-		ego.vehicleAngle.z = ego.vehicleAngle.z / 180 * math.pi
-		local c = ego.vehicleAngle.y
-		ego.vehicleAngle.y = ego.vehicleAngle.z
-		ego.vehicleAngle.z = c
-		--log(ego.vehicleAngle) -- debug
+		local c = ego.vehicleAngle.x
+		local e = ego.vehicleAngle.y
+		ego.vehicleAngle.x = ego.vehicleAngle.z / 180 * math.pi
+		ego.vehicleAngle.y = -c / 180 * math.pi
+		ego.vehicleAngle.z = -e
+		ego.roll = ego.vehicleAngle.z
 	else -- Ausserhalb des Fahrzeuges, roll Wert auf 0 interpolieren
 		if ego.viewAngle.z > 0 then
 			ego.viewAngle.z = Lerp(ego.viewAngle.z, 0, 0.07*ego.fTime)
@@ -91,7 +90,7 @@ function ego.calculateCamera()
 	end
 	
 	--[[
-	if(isPedInVehicle(g_Me) and getPedOccupiedVehicle(g_Me)) then -- wenn wir in einem Fahrzeug sind, beziehen wir dessen Rotation mit ein
+	if isPedInVehicle(g_Me) then -- wenn wir in einem Fahrzeug sind, beziehen wir dessen Rotation mit ein
 		local newVehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
 		local diff = newVehicleAngle.z - ego.lastVehicleAngle.z
 		ego.viewAngleXY = ego.viewAngleXY + diff
@@ -116,9 +115,9 @@ function ego.calculateCamera()
 		ego.viewAngleZ = 2.0
 	end
 	]]
-	log("vehicleAngle:" .. tostring(ego.vehicleAngle))
+	--log("vehicleAngle:" .. tostring(ego.vehicleAngle))
 	local angle = ego.viewAngle + ego.vehicleAngle + ego.totalOffset.rot
-	log("angle: " .. tostring(angle))
+	--log("angle: " .. tostring(angle))
 	ego.lookAt = ego.head + Angle2Vector(angle.x, angle.y) + ego.totalOffset.pos
 	-- ego.roll = angle.z
 end
