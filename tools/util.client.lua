@@ -60,3 +60,11 @@ function destroyBlipsAttachedTo(elem)
 	end
 	return wasDestroyed
 end
+
+function getAbsoluteCoordinateX(x)
+	return (x*g_ScreenSize[1])
+end
+
+function getAbsoluteCoordinateY(y)
+	return (y*g_ScreenSize[2])
+end

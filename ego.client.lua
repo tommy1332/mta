@@ -77,8 +77,6 @@ end
 function ego.calculateCamera()
 	ego.camPos = Vector(0,0,0)
 	
-	log("A");
-
 	if getPedOccupiedVehicle(g_Me) then -- Im Vehikel
 		-- Rotation anpassen
 		ego.vehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
@@ -90,7 +88,7 @@ function ego.calculateCamera()
 		ego.camRoll = ego.vehicleAngle.z
 		
 		-- Position anpassen
-		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me) , getPlayerOccupiedSeat(g_Me) );
+		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me) , getPlayerOccupiedSeat(g_Me) ) );
 		if vd.offset ~= 0 then
 			ego.camPos = ego.camPos + Vector(getPedBonePosition(g_Me, 8)) -- Position vom Kopf
 			ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
@@ -110,14 +108,10 @@ function ego.calculateCamera()
 		ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
 	end
 	
-	log("B");
-	
 	-- camDir zusammenbasteln :3
 	local angle = ego.viewAngle + ego.vehicleAngle + ego.viewOffsetTotal.rot
 	ego.camDir = ego.camDir + Angle2Vector(angle.x, angle.y) + ego.viewOffsetTotal.pos
 	-- ego.camRoll = angle.z
-	
-	log("C");
 end
 
 function ego.rotatecamPos( X , Y )

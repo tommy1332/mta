@@ -30,7 +30,7 @@ vehicles =
 	imageDrehzahlZeiger = 'data/images/drehzahlzeiger.png',
 	imageTankTempZeiger = 'data/images/zeigertanktemp.png',
 	
-	viewData = {} -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
+	viewData = {}, -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
 	defaultViewData = { pos = Vector(0,0,0), offset = 0 }
 }
 
@@ -119,7 +119,7 @@ function vehicles.drawTacho()
 				-- TODO: Add Bicycle Tacho
 			elseif getVehicleType(veh) == 'Automobile' or getVehicleType(veh) == 'Monster Truck' or getVehicleType(veh) == 'Quad' then
 			]]
-				dxDrawImage(getAbsoluteCoordinateX(0.2), getAbsoluteCoordinateY(0.7), getAbsoluteCoordinateX(0.6), getAbsoluteCoordinateY(0.3), vehicles.imageTacho)
+				dxDrawImage(getAbsoluteCoordinateX(0.2), getAbsoluteCoordinateY(0.7), getAbsoluteCoordinateX(0.6), 3(0.3), vehicles.imageTacho)
 				dxDrawImage(getAbsoluteCoordinateX(0.39), getAbsoluteCoordinateY(0.745), getAbsoluteCoordinateX(0.22), getAbsoluteCoordinateY(0.23), vehicles.imageSpeedZeiger, getVehicleSpeed(veh) * 0.86 - 5)
 				if (vehicles.blinkerID == 1 or vehicles.blinkerID == 3) and vehicles.blinkerState == true then dxDrawImage(getAbsoluteCoordinateX(0.36), getAbsoluteCoordinateY(0.7545), getAbsoluteCoordinateX(0.03), getAbsoluteCoordinateY(0.03), vehicles.imageBlinker) end
 				if (vehicles.blinkerID == 2 or vehicles.blinkerID == 3) and vehicles.blinkerState == true then dxDrawImage(getAbsoluteCoordinateX(0.6105), getAbsoluteCoordinateY(0.7528), getAbsoluteCoordinateX(0.03), getAbsoluteCoordinateY(0.03), vehicles.imageBlinker, 180) end
@@ -208,18 +208,6 @@ function vehicles.getViewData( VehID , SeatID )
 	if vehicles.viewData[VehID][SeatID] == nil then return vehicles.defaultViewData end
 	return vehicles.viewData[VehID][SeatID]
 end
-
--- Vielleicht zu Tool Funktionen tuen oder/auch vereinen x,y?
---- Ja! Mach.
-function getAbsoluteCoordinateX(x)
-	return (x*g_ScreenSize[1])
-end
-
-function getAbsoluteCoordinateY(y)
-	return (y*g_ScreenSize[2])
-end
-
-
 
 -- Funktion zum Berechnen der Geschwindigkeit eines Fahrzeugs
 function getVehicleSpeed(vehicle)
