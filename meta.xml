@@ -116,10 +116,6 @@
     <file src="data/carmods/infernus3.txd" />
     <file src="data/carmods/infernus.txd" />
 	
-	<!-- Alles weiter unten ist noch doof gemacht. :C -->
-	
-	<!--
-	<script src="test.server.lua" />
-	<script src="test.client.lua" type="client" />
-	-->
+	<!-- XML -->
+	<file src="vehicle_view.xml" />
 </meta>

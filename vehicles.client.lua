@@ -28,7 +28,10 @@ vehicles =
 	imageHandbrake = 'data/images/handbremse.png',
 	imageLamp = 'data/images/lampe1.png',
 	imageDrehzahlZeiger = 'data/images/drehzahlzeiger.png',
-	imageTankTempZeiger = 'data/images/zeigertanktemp.png'
+	imageTankTempZeiger = 'data/images/zeigertanktemp.png',
+	
+	viewData = {} -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
+	defaultViewData = { pos = Vector(0,0,0), offset = 0 }
 }
 
 function vehicles.onStart()
@@ -110,9 +113,12 @@ function vehicles.drawTacho()
 	local veh = getPedOccupiedVehicle(g_Me)
 	if veh then
 		if getVehicleOccupant(veh, 0) == g_Me then
-			if getVehicleType(veh) == 'BMX' then
+			-- Henry: Da atm keine Zeichenfunktionen für andere Fahrzeuge existieren, wird bis dahin der Code vom Auto-Zeugs genutzt.
+		
+			--[[ if getVehicleType(veh) == 'BMX' then
 				-- TODO: Add Bicycle Tacho
 			elseif getVehicleType(veh) == 'Automobile' or getVehicleType(veh) == 'Monster Truck' or getVehicleType(veh) == 'Quad' then
+			]]
 				dxDrawImage(getAbsoluteCoordinateX(0.2), getAbsoluteCoordinateY(0.7), getAbsoluteCoordinateX(0.6), getAbsoluteCoordinateY(0.3), vehicles.imageTacho)
 				dxDrawImage(getAbsoluteCoordinateX(0.39), getAbsoluteCoordinateY(0.745), getAbsoluteCoordinateX(0.22), getAbsoluteCoordinateY(0.23), vehicles.imageSpeedZeiger, getVehicleSpeed(veh) * 0.86 - 5)
 				if (vehicles.blinkerID == 1 or vehicles.blinkerID == 3) and vehicles.blinkerState == true then dxDrawImage(getAbsoluteCoordinateX(0.36), getAbsoluteCoordinateY(0.7545), getAbsoluteCoordinateX(0.03), getAbsoluteCoordinateY(0.03), vehicles.imageBlinker) end
@@ -122,6 +128,7 @@ function vehicles.drawTacho()
 				dxDrawImage(getAbsoluteCoordinateX(0.635), getAbsoluteCoordinateY(0.835), getAbsoluteCoordinateX(0.1), getAbsoluteCoordinateY(0.08), vehicles.imageDrehzahlZeiger, vehicles.drehZahl)
 				dxDrawImage(getAbsoluteCoordinateX(0.296), getAbsoluteCoordinateY(0.85), getAbsoluteCoordinateX(0.08), getAbsoluteCoordinateY(0.08), vehicles.imageTankTempZeiger, 255)
 				dxDrawImage(getAbsoluteCoordinateX(0.25), getAbsoluteCoordinateY(0.85), getAbsoluteCoordinateX(0.08), getAbsoluteCoordinateY(0.08), vehicles.imageTankTempZeiger, 0)
+			--[[
 			elseif getVehicleType(veh) == 'Plane' or getVehicleType(veh) == 'Helicopter' then
 				-- TODO: Add Plane/Helicopter Tacho
 			elseif getVehicleType(veh) == 'Bike' then
@@ -131,6 +138,7 @@ function vehicles.drawTacho()
 			elseif getVehicleType(veh) == 'Boat' then
 				-- TODO: Add Boat Tacho
 			end
+			]]
 		end
 	end
 end
@@ -147,7 +155,62 @@ function vehicles.onVehicleControlPressed(key, keystate)
 	end
 end
 
+function vehicles.loadViewData()
+	local root_node = xmlLoadFile(':test/vehicle_view.xml')
+	if not root_node then
+		log("Can't load vehicle_view.xml!");
+		return
+	end
+
+
+	local root_idx = 0
+
+	local veh_node = nil
+	local veh_idx = 0
+	local veh_id = 0
+	local veh_table = nil
+
+	local seat_node = nil
+	local seat_id = nil
+	local seat_table = nil
+
+	repeat
+		veh_node = xmlFindChild(root_node, 'vehicle', root_idx)
+		if not veh_node then break end
+		root_idx = root_idx + 1
+		
+		veh_id = tonumber(xmlNodeGetAttribute(veh_node, 'id'))
+		veh_table = {}
+		vehicles.viewData[veh_id] = veh_table;
+
+		veh_idx = 0
+		repeat
+			seat_node = xmlFindChild(veh_node, 'seat', veh_idx)
+			if not seat_node then break end
+			veh_idx = veh_idx + 1
+			
+			seat_id = tonumber(xmlNodeGetAttribute(seat_node, 'id'))
+			seat_table = {}
+			veh_table[seat_id] = seat_table;
+			
+			seat_table['pos'] = Vector( tonumber(xmlNodeGetAttribute(seat_node, 'x')),
+										tonumber(xmlNodeGetAttribute(seat_node, 'y')),
+										tonumber(xmlNodeGetAttribute(seat_node, 'z')));
+			
+			seat_table['offset'] = tonumber(xmlNodeGetAttribute(seat_node, 'offset'));
+		until false
+	until false
+
+	xmlUnloadFile(rootNode)
+end
+
+function vehicles.getViewData( VehID , SeatID )
+	if vehicles.viewData[VehID][SeatID] == nil then return vehicles.defaultViewData end
+	return vehicles.viewData[VehID][SeatID]
+end
+
 -- Vielleicht zu Tool Funktionen tuen oder/auch vereinen x,y?
+--- Ja! Mach.
 function getAbsoluteCoordinateX(x)
 	return (x*g_ScreenSize[1])
 end

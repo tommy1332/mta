@@ -26,26 +26,31 @@ ego =
 	isEnabled = true,
 	viewAngle = Vector(0,0,0),
 	vehicleAngle = Vector(0,0,0),
-	lookAt = Vector(1,1,1),
-	head = Vector(0,0,0),
-	roll = 0.0,
+	
+	camDir = Vector(1,1,1),
+	camPos = Vector(0,0,0),
+	camRoll = 0.0,
+	
 	fTimeOld = 0.0,
 	fTime = 0.0,
+	
 	viewOffset = {},
-	totalOffset = { pos = Vector(0,0,0), rot = Vector(0,0,0) },
+	viewOffsetTotal = { pos = Vector(0,0,0), rot = Vector(0,0,0) }, -- Fertig berechnetes Offset von der Offset-Liste :O (viewOffset)
+	
 	restrictFn = false
 }
 
 function ego.updateOffset()
+	ego.viewOffsetTotal = {} -- erstmal zurücksetzen
 	for v in ego.viewOffset do
-		ego.totalOffset.pos = ego.totalOffset.pos + v.pos
-		ego.totalOffset.rot = ego.totalOffset.rot + v.rot
+		ego.viewOffsetTotal.pos = ego.viewOffsetTotal.pos + v.pos
+		ego.viewOffsetTotal.rot = ego.viewOffsetTotal.rot + v.rot
 	end
 end
 
 
 function ego.addOffset(Name, Pos, Rot)
-	viewOffset[name] = 
+	ego.viewOffset[name] = 
 	{
 		pos = pos + Pos,
 		rot = rot + Rot
@@ -70,59 +75,46 @@ function ego.onAim(key, keystate)
 end
 
 function ego.calculateCamera()
-	ego.head = Vector(getPedBonePosition(g_Me, 8))
-	ego.head.z = ego.head.z + 0.2 -- allgemeines offset, wegen Bone und so
+	ego.camPos = Vector(0,0,0)
 
-	if getPedOccupiedVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
+	if getPedOccupiedVehicle(g_Me) then -- Im Vehikel
+		-- Rotation anpassen
 		ego.vehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
 		local c = ego.vehicleAngle.x
 		local e = ego.vehicleAngle.y
 		ego.vehicleAngle.x = ego.vehicleAngle.z / 180 * math.pi
 		ego.vehicleAngle.y = -c / 180 * math.pi
 		ego.vehicleAngle.z = -e
-		ego.roll = ego.vehicleAngle.z
-	else -- Ausserhalb des Fahrzeuges, roll Wert auf 0 interpolieren
+		ego.camRoll = ego.vehicleAngle.z
+		
+		-- Position anpassen
+		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me) , getPlayerOccupiedSeat(g_Me) );
+		if vd.offset ~= 0 then
+			ego.camPos = ego.camPos + Vector(getPedBonePosition(g_Me, 8)) -- Position vom Kopf
+			ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
+		end
+		ego.camPos = ego.camPos + vd.pos;
+		
+	else -- Ausserhalb des Fahrzeuges
+		-- camRoll Wert auf 0 interpolieren
 		if ego.viewAngle.z > 0 then
 			ego.viewAngle.z = Lerp(ego.viewAngle.z, 0, 0.07*ego.fTime)
 		elseif ego.viewAngle.z < 0 then
 			ego.viewAngle.z = Lerp(0, ego.viewAngle.z, 0.07*ego.fTime)
 		end
+		
+		-- camPos Offset hinzurechnen
+		ego.camPos = ego.camPos + Vector(getPedBonePosition(g_Me, 8)) -- Position vom Kopf
+		ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
 	end
 	
-	--[[
-	if isPedInVehicle(g_Me) then -- wenn wir in einem Fahrzeug sind, beziehen wir dessen Rotation mit ein
-		local newVehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
-		local diff = newVehicleAngle.z - ego.lastVehicleAngle.z
-		ego.viewAngleXY = ego.viewAngleXY + diff
-		ego.lastVehicleAngleX, ego.lastVehicleAngleY, ego.lastVehicleAngleZ = newVehicleAngleX, newVehicleAngleY, newVehicleAngleZ
-		ego.headZ = ego.headZ - 0.1
-		if newVehicleAngleX > 90 and newVehicleAngleX < 270 then
-			ego.roll = newVehicleAngleY - 180
-		else
-			ego.roll = -newVehicleAngleY
-		end
-	else -- interpoliere roll ausserhalb des fahrzeuges wieder auf 0
-		if ego.roll > 0 then
-			ego.roll = Lerp(ego.roll, 0, 0.07*ego.fTime)
-		else
-			ego.roll = Lerp(0, ego.roll, 0.07*ego.fTime)
-		end
-	end
-	
-	if ego.viewAngleZ < 1.0 then
-		ego.viewAngleZ = 1.0
-	elseif ego.viewAngleZ > 2.0 then
-		ego.viewAngleZ = 2.0
-	end
-	]]
-	--log("vehicleAngle:" .. tostring(ego.vehicleAngle))
-	local angle = ego.viewAngle + ego.vehicleAngle + ego.totalOffset.rot
-	--log("angle: " .. tostring(angle))
-	ego.lookAt = ego.head + Angle2Vector(angle.x, angle.y) + ego.totalOffset.pos
-	-- ego.roll = angle.z
+	-- camDir zusammenbasteln :3
+	local angle = ego.viewAngle + ego.vehicleAngle + ego.viewOffsetTotal.rot
+	ego.camDir = ego.camDir + Angle2Vector(angle.x, angle.y) + ego.viewOffsetTotal.pos
+	-- ego.camRoll = angle.z
 end
 
-function ego.rotateHead( X , Y )
+function ego.rotatecamPos( X , Y )
 	X = Wrap( ego.viewAngle.x - (X-0.5)*4 , 0 , 2*math.pi )
 	Y = BoundBy( ego.viewAngle.y + (Y-0.5)*4 , (0.5+0.01)*math.pi , (1.5-0.01)*math.pi )
 	if not ego.restrictFn then
@@ -147,13 +139,13 @@ function ego.onStart()
 	function()
 		if ego.isEnabled then
 			ego.calculateCamera()
-			setCameraMatrix(ego.head.x,
-							ego.head.y,
-							ego.head.z,
-							ego.lookAt.x,
-							ego.lookAt.y,
-							ego.lookAt.z,
-							ego.roll, 90)
+			setCameraMatrix(ego.camPos.x,
+							ego.camPos.y,
+							ego.camPos.z,
+							ego.camDir.x,
+							ego.camDir.y,
+							ego.camDir.z,
+							ego.camRoll, 90)
 		end
 	end)
 	
@@ -170,14 +162,14 @@ function ego.onStart()
 			return
 		end
 		--log("absolute = "..(absoluteX-(g_ScreenSize.x/2)).." "..(absoluteY-(g_ScreenSize.y/2)))
-		ego.rotateHead(cursorX, cursorY)
+		ego.rotatecamPos(cursorX, cursorY)
 		setCursorPosition(g_ScreenSize.x/2, g_ScreenSize.y/2)
 	end)
 	
-	addEvent('onHeadMove', true)
-	addEventHandler('onHeadMove', getRootElement(), 
+	addEvent('oncamPosMove', true)
+	addEventHandler('oncamPosMove', getRootElement(), 
 		function(lX, lY, lZ)
-			setPedLookAt(source, lX, lY, lZ)
+			setPedcamDir(source, lX, lY, lZ)
 		end
 	)
 	addEventHandler("onClientPlayerSpawn", g_Me, 

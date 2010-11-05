@@ -204,6 +204,7 @@ function vehicles.commandVeh(playerSource, commandName, col1)
 		if vehelement then
 			setVehicleRespawnPosition(vehelement, vehicles.data[vehid].x, vehicles.data[vehid].y, vehicles.data[vehid].z, vehicles.data[vehid].rx, vehicles.data[vehid].ry, vehicles.data[vehid].rz)
 			setVehicleFuelTankExplodable(vehelement, true)
+			setVehiclePlateText(vehelement, "42");
 			db.query('INSERT INTO vehicles (modelid,x,y,z,rx,ry,rz,numberplate,meta) VALUES ("'..db.escQS(vehicles.data[vehid].modelid)..'","'..db.escQS(vehicles.data[vehid].x)..'","'..db.escQS(vehicles.data[vehid].y)..'","'..db.escQS(vehicles.data[vehid].z)..'","'..db.escQS(vehicles.data[vehid].rx)..'","'..db.escQS(vehicles.data[vehid].ry)..'","'..db.escQS(vehicles.data[vehid].rz)..'","'..db.escQS(toJSON(vehicles.data[vehid].numberplate))..'","'..db.escQS(toJSON(vehicles.data[vehid].meta))..'")')
 			local tbl = db.query('SELECT * FROM vehicles ORDER BY id DESC LIMIT 1')
 			vehicles.data[vehid] = tbl[1]

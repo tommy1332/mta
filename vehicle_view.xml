@@ -1,0 +1,6 @@
+<vehicle_view>
+    <vehicle id="478">
+		<seat id="0" offset="0" x="0" y="10" z="0"/>
+		<seat id="1" offset="0" x="0" y="10" z="0"/>
+	</vehicle>
+</vehicle_view>
