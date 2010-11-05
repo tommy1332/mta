@@ -73,7 +73,7 @@ function ego.calculateCamera()
 	ego.head = Vector(getPedBonePosition(g_Me, 8))
 	ego.head.z = ego.head.z + 0.2 -- allgemeines offset, wegen Bone und so
 
-	if isPedInVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
+	if getPedOccupiedVehicle(g_Me) then -- Im Vehikel, Anpassen der Rotation
 		ego.vehicleAngle = Vector(getElementRotation(getPedOccupiedVehicle(g_Me)))
 		local c = ego.vehicleAngle.x
 		local e = ego.vehicleAngle.y

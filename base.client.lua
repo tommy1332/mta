@@ -7,7 +7,7 @@ Beschreibung:
 Variablen:
 	g_Root - Basiselement des Objektbaumes.
 	g_ResRoot - Basiselement des Ressourcenbaumes.
-	g_Player - Der eigene Spieler.
+	g_Me - Der eigene Spieler.
 
 
 Funktionen:
@@ -20,7 +20,7 @@ Funktionen:
 g_Root = getRootElement()
 g_ResRoot = getResourceRootElement(getThisResource())
 g_Res = getThisResource()
-g_Player = getLocalPlayer()
+g_Me = getLocalPlayer()
 g_ScreenSize = Vector(guiGetScreenSize())
 
 base =
@@ -79,7 +79,7 @@ addEventHandler('onClientResourceStop', g_Root, base.onResourceStop)
 
 function log(Msg)
 	--if not base.serverstopped then
-		triggerServerEvent("onClientLog", g_Player, tostring(Msg))
+		triggerServerEvent("onClientLog", g_Me, tostring(Msg))
 	--else
 		outputDebugString(tostring(Msg))
 	--end

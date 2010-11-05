@@ -85,7 +85,7 @@ function acc.createLoginTab()
 	
 	
 	-- Setup!
-	guiSetText(acc.login.name, getPlayerName(g_Player))
+	guiSetText(acc.login.name, getPlayerName(g_Me))
 	guiSetText(acc.login.pw, '')
 	guiSetText(acc.login.msg, '')
 	acc.loadSettings()
@@ -130,7 +130,7 @@ function acc.onLoginSubmit()
 
 	-- TODO: Hier erstmal vorprüfen!
 
-	triggerServerEvent('acc.onLoginSubmit', g_Player, g_Player, guiGetText(acc.login.name), guiGetText(acc.login.pw))
+	triggerServerEvent('acc.onLoginSubmit', g_Me, g_Me, guiGetText(acc.login.name), guiGetText(acc.login.pw))
 
 	if guiCheckBoxGetSelected(acc.login.remember) then
 		acc.saveSettings()
