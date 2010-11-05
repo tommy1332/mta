@@ -76,6 +76,8 @@ end
 
 function ego.calculateCamera()
 	ego.camPos = Vector(0,0,0)
+	
+	log("A");
 
 	if getPedOccupiedVehicle(g_Me) then -- Im Vehikel
 		-- Rotation anpassen
@@ -108,10 +110,14 @@ function ego.calculateCamera()
 		ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
 	end
 	
+	log("B");
+	
 	-- camDir zusammenbasteln :3
 	local angle = ego.viewAngle + ego.vehicleAngle + ego.viewOffsetTotal.rot
 	ego.camDir = ego.camDir + Angle2Vector(angle.x, angle.y) + ego.viewOffsetTotal.pos
 	-- ego.camRoll = angle.z
+	
+	log("C");
 end
 
 function ego.rotatecamPos( X , Y )
