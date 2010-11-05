@@ -119,7 +119,7 @@ function vehicles.drawTacho()
 				-- TODO: Add Bicycle Tacho
 			elseif getVehicleType(veh) == 'Automobile' or getVehicleType(veh) == 'Monster Truck' or getVehicleType(veh) == 'Quad' then
 			]]
-				dxDrawImage(getAbsoluteCoordinateX(0.2), getAbsoluteCoordinateY(0.7), getAbsoluteCoordinateX(0.6), 3(0.3), vehicles.imageTacho)
+				dxDrawImage(getAbsoluteCoordinateX(0.2), getAbsoluteCoordinateY(0.7), getAbsoluteCoordinateX(0.6), getAbsoluteCoordinateY(0.3), vehicles.imageTacho)
 				dxDrawImage(getAbsoluteCoordinateX(0.39), getAbsoluteCoordinateY(0.745), getAbsoluteCoordinateX(0.22), getAbsoluteCoordinateY(0.23), vehicles.imageSpeedZeiger, getVehicleSpeed(veh) * 0.86 - 5)
 				if (vehicles.blinkerID == 1 or vehicles.blinkerID == 3) and vehicles.blinkerState == true then dxDrawImage(getAbsoluteCoordinateX(0.36), getAbsoluteCoordinateY(0.7545), getAbsoluteCoordinateX(0.03), getAbsoluteCoordinateY(0.03), vehicles.imageBlinker) end
 				if (vehicles.blinkerID == 2 or vehicles.blinkerID == 3) and vehicles.blinkerState == true then dxDrawImage(getAbsoluteCoordinateX(0.6105), getAbsoluteCoordinateY(0.7528), getAbsoluteCoordinateX(0.03), getAbsoluteCoordinateY(0.03), vehicles.imageBlinker, 180) end

@@ -103,6 +103,22 @@ function ego.calculateCamera()
 			ego.viewAngle.z = Lerp(0, ego.viewAngle.z, 0.07*ego.fTime)
 		end
 		
+		if ego.vehicleAngle.x > 0 then
+			ego.vehicleAngle.x = Lerp(ego.vehicleAngle.x, 0, 0.003*ego.fTime)
+		elseif ego.vehicleAngle.x < 0 then
+			ego.vehicleAngle.x = Lerp(0, ego.vehicleAngle.x, 0.003*ego.fTime)		
+		end		
+		if ego.vehicleAngle.y > 0 then
+			ego.vehicleAngle.y = Lerp(ego.vehicleAngle.y, 0, 0.003*ego.fTime)
+		elseif ego.vehicleAngle.y < 0 then
+			ego.vehicleAngle.y = Lerp(0, ego.vehicleAngle.y, 0.003*ego.fTime)		
+		end		
+		if ego.vehicleAngle.z > 0 then
+			ego.vehicleAngle.z = Lerp(ego.vehicleAngle.z, 0, 0.003*ego.fTime)
+		elseif ego.vehicleAngle.z < 0 then
+			ego.vehicleAngle.z = Lerp(0, ego.vehicleAngle.z, 0.003*ego.fTime)		
+		end		
+
 		-- camPos Offset hinzurechnen
 		ego.camPos = ego.camPos + Vector(getPedBonePosition(g_Me, 8)) -- Position vom Kopf
 		ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
