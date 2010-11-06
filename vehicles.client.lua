@@ -18,6 +18,8 @@ vehicles =
 	drehZahl = 0,
 	drehZahlW = false,
 
+	currentSeat = 1,
+
 	soundSwitch = 'data/sounds/switch.mp3',
 	soundHandbrake = 'data/sounds/handbrake.mp3',
 	soundBlinker = 'data/sounds/blinker.mp3',
@@ -70,6 +72,14 @@ function vehicles.onStart()
 		end
 	)
 
+	addEventHandler('onClientVehicleEnter', g_Root, 
+		function(thePlayer, seat)
+			if g_Me == thePlayer then
+				vehicles.currentSeat = seat + 1
+			end
+		end	
+	)
+
 	bindKey('w', 'both', vehicles.onVehicleControlPressed)
 
 	setTimer( -- Timer zum Simulieren der Drehzahl Anzeige
@@ -102,6 +112,10 @@ function vehicles.onStop()
 end
 
 base.addModule('vehicles', vehicles.onStart, vehicles.onStop)
+
+function vehicles.getCurrentSeat()
+	return vehicles.currentSeat
+end
 
 function vehicles.onRender()
 	if isPedInVehicle(g_Me) then
@@ -205,7 +219,7 @@ function vehicles.loadViewData()
 end
 
 function vehicles.getViewData( VehID , SeatID )
-	if vehicles.viewData[VehID][SeatID] == nil then return vehicles.defaultViewData end
+	if not vehicles.viewData[VehID][SeatID] then return vehicles.defaultViewData end
 	return vehicles.viewData[VehID][SeatID]
 end
 

@@ -30,6 +30,7 @@ ego =
 	camDir = Vector(1,1,1),
 	camPos = Vector(0,0,0),
 	camRoll = 0.0,
+	camFov = 90.0,
 	
 	fTimeOld = 0.0,
 	fTime = 0.0,
@@ -85,10 +86,10 @@ function ego.calculateCamera()
 		ego.vehicleAngle.x = ego.vehicleAngle.z / 180 * math.pi
 		ego.vehicleAngle.y = -c / 180 * math.pi
 		ego.vehicleAngle.z = -e
-		ego.camRoll = ego.vehicleAngle.z
+		ego.camRoll = ego.vehicleAngle.z -- todo: roll wert sollte von -180 bis +180 laufen, pruefen und ggf. fixx0rn
 		
 		-- Position anpassen
-		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me) , getPlayerOccupiedSeat(g_Me) ) );
+		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me)) , vehicles.getCurrentSeat() );
 		if vd.offset ~= 0 then
 			ego.camPos = ego.camPos + Vector(getPedBonePosition(g_Me, 8)) -- Position vom Kopf
 			ego.camPos.z = ego.camPos.z + 0.2 -- allgemeines offset, wegen Bone
@@ -102,7 +103,8 @@ function ego.calculateCamera()
 		elseif ego.viewAngle.z < 0 then
 			ego.viewAngle.z = Lerp(0, ego.viewAngle.z, 0.07*ego.fTime)
 		end
-		
+
+		-- vehicleAngle Vektor auf 0 interpolieren
 		if ego.vehicleAngle.x > 0 then
 			ego.vehicleAngle.x = Lerp(ego.vehicleAngle.x, 0, 0.003*ego.fTime)
 		elseif ego.vehicleAngle.x < 0 then
@@ -126,7 +128,7 @@ function ego.calculateCamera()
 	
 	-- camDir zusammenbasteln :3
 	local angle = ego.viewAngle + ego.vehicleAngle + ego.viewOffsetTotal.rot
-	ego.camDir = ego.camDir + Angle2Vector(angle.x, angle.y) + ego.viewOffsetTotal.pos
+	ego.camDir = ego.camPos + Angle2Vector(angle.x, angle.y) + ego.viewOffsetTotal.pos
 	-- ego.camRoll = angle.z
 end
 
@@ -161,7 +163,8 @@ function ego.onStart()
 							ego.camDir.x,
 							ego.camDir.y,
 							ego.camDir.z,
-							ego.camRoll, 90)
+							ego.camRoll, 
+							ego.camFov)
 		end
 	end)
 	
