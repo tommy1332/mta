@@ -86,7 +86,9 @@ function ego.calculateCamera()
 		ego.vehicleAngle.x = ego.vehicleAngle.z / 180 * math.pi
 		ego.vehicleAngle.y = -c / 180 * math.pi
 		ego.vehicleAngle.z = -e
-		ego.camRoll = ego.vehicleAngle.z -- todo: roll wert sollte von -180 bis +180 laufen, pruefen und ggf. fixx0rn
+		ego.camRoll = ego.vehicleAngle.z --[[  todo: roll wert sollte von -180 bis +180 laufen, pruefen und ggf. fixx0rn
+		Dadurch entstand evtl auch dieser Fehler im Hubschrauber..
+		]]
 		
 		-- Position anpassen
 		local vd = vehicles.getViewData( getElementModel(getPedOccupiedVehicle(g_Me)) , vehicles.getCurrentSeat() );

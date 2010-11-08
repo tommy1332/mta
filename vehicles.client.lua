@@ -8,6 +8,8 @@
 		
 ]]
 
+--[[ TODO: Vielleicht mal generischer schreiben, sodass man Tachos und Sounds für jedes Auto setzen kann. ]]
+
 vehicles = 
 {
 	gaugePosition = { g_ScreenSize[1] * 0.02, g_ScreenSize[2] * 0.6 },
@@ -18,7 +20,7 @@ vehicles =
 	drehZahl = 0,
 	drehZahlW = false,
 
-	currentSeat = 1,
+	currentSeat = 0,
 
 	soundSwitch = 'data/sounds/switch.mp3',
 	soundHandbrake = 'data/sounds/handbrake.mp3',
@@ -32,8 +34,7 @@ vehicles =
 	imageDrehzahlZeiger = 'data/images/drehzahlzeiger.png',
 	imageTankTempZeiger = 'data/images/zeigertanktemp.png',
 	
-	viewData = {}, -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
-	defaultViewData = { pos = Vector(0,0,0), offset = 0 }
+	viewData = { default = { pos = Vector(0,0,0), offset = 1 } } -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
 }
 
 function vehicles.onStart()
@@ -75,7 +76,7 @@ function vehicles.onStart()
 	addEventHandler('onClientVehicleEnter', g_Root, 
 		function(thePlayer, seat)
 			if g_Me == thePlayer then
-				vehicles.currentSeat = seat + 1
+				vehicles.currentSeat = seat
 			end
 		end	
 	)
@@ -219,7 +220,7 @@ function vehicles.loadViewData()
 end
 
 function vehicles.getViewData( VehID , SeatID )
-	if not vehicles.viewData[VehID][SeatID] then return vehicles.defaultViewData end
+	if vehicles.viewData[VehID] == nil or vehicles.viewData[VehID][SeatID] == nil then return vehicles.viewData.default end
 	return vehicles.viewData[VehID][SeatID]
 end
 
