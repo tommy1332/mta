@@ -65,7 +65,6 @@ end
 function ego.onAim(key, keystate)
 	if keystate == 'down' then
 		if not isPedInVehicle(g_Me) and getPedWeapon(g_Me) ~= 0 and getPedTotalAmmo(g_Me) ~= 0 then
-			log("ego.isEnabled = false")
 			ego.isEnabled = false -- TODO: Proxyfunktionen währen toll. Damit könnte dann auch setCameraTarget impliziert werden. ^^
 			setCameraTarget(g_Me, g_Me)
 		end
@@ -190,32 +189,3 @@ base.addModule('ego', ego.onStart, ego.onStop, 'mmenu')
 function Angle2Vector(u,v) -- Sollte irgendwann mal in tools/tools.lua oder in tools/vec.lua als Memberfunktion ;)
 	return Vector( math.cos(u) * math.cos(v), math.sin(u) * math.cos(v), math.sin(v) )
 end
-
---[[ Altes Zeug
-
-	addEventHandler("onClientPlayerVehicleEnter", g_Root, 
-		function (vehicle)
-			ego.lastVehicleAngle = Vector(getElementRotation(vehicle))
-			-- ego.lastVehicleAngleX, ego.lastVehicleAngleY, ego.lastVehicleAngleZ = ego.lastVehicleAngleX / 360, ego.lastVehicleAngleY / 360, ego.lastVehicleAngleZ / 360 -- dunnow was das hier tut
-		end
-	)
-
-addEventHandler("onClientPlayerVehicleExit", g_Root,
-		function(vehicle)
-			ego.lookup = false
-		end
-	)
-
-function ego.onLookUp(key, keystate) -- whut?
-	if isPedInVehicle(g_Me) then
-		if key == 'c' then
-			if keystate == 'down' then
-				ego.lookup = true
-			else
-				ego.lookup = false
-			end
-		end
-	end
-end
-
-]]
