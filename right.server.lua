@@ -1,15 +1,15 @@
 --[[ Rechte (rights)
 
 Beschreibung:
-	Stellt Funktionen für die überprüfung der Rechte zur Verfügung.
+	Stellt Funktionen fÃ¼r die Ã¼berprÃ¼fung der Rechte zur VerfÃ¼gung.
 
 
 Funktionen:
 	initDB() - Initialisiert die Datenbank
-	addRight(groupID,rightID) - Gibt einer Gruppe das Recht für ein Recht
-	deleteRight(groupID,rightID) - Nimmt einer Gruppe das Recht für ein Recht
-	hasUserRight(userID,rightID) - Überprüft ob der User das Recht hat für ein Recht
-	hasGroupRight(groupID,rightID) - Überprüft ob die Gruppe das Recht hat für ein Recht
+	addRight(groupID,rightID) - Gibt einer Gruppe das Recht fÃ¼r ein Recht
+	deleteRight(groupID,rightID) - Nimmt einer Gruppe das Recht fÃ¼r ein Recht
+	hasUserRight(userID,rightID) - ÃœberprÃ¼ft ob der User das Recht hat fÃ¼r ein Recht
+	hasGroupRight(groupID,rightID) - ÃœberprÃ¼ft ob die Gruppe das Recht hat fÃ¼r ein Recht
 ]]
 
 right = {}

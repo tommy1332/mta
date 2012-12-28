@@ -6,7 +6,7 @@ Beschreibung:
 
 Funktionen:
 	addColumn ( <Name>, <Breite> ) - Neue Spalte erstellen.
-	removeColumn ( <Name> ) - Spalte löschen.
+	removeColumn ( <Name> ) - Spalte lÃ¶schen.
 
 ]]
 

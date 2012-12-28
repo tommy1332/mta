@@ -1,7 +1,7 @@
 --[[ Basisscript (base)
 
 Beschreibung:
-	Allgemeine Sachen, die von jedem Modul benötigt werden.
+	Allgemeine Sachen, die von jedem Modul benÃ¶tigt werden.
 
 
 Variablen:
@@ -11,8 +11,8 @@ Variablen:
 
 
 Funktionen:
-	log ( <Nachricht> ) - Loggt ein Ereignis. ( Warscheinlich kommt später noch eine Option für den Ereignistyp hinzu -> Info,Warning,Error oder sowas)
-	addModule ( <Name>, <Startfunktion>, <Stopfunktion>, <Abhängigkeiten> ) - Registriert ein neues Modul.
+	log ( <Nachricht> ) - Loggt ein Ereignis. ( Warscheinlich kommt spÃ¤ter noch eine Option fÃ¼r den Ereignistyp hinzu -> Info,Warning,Error oder sowas)
+	addModule ( <Name>, <Startfunktion>, <Stopfunktion>, <AbhÃ¤ngigkeiten> ) - Registriert ein neues Modul.
 
 ]]
 
@@ -50,6 +50,7 @@ end
 
 
 function base.onResourceStart()
+	log("base.onResourceStart invoked!!!!")
 	-- base.logfile = fileCreate(getRealTime().days .. '.txt')
 
 	base.startlist = base.startlist:compile(false)
@@ -69,7 +70,7 @@ function base.onResourceStart()
 		triggerEvent('onPlayerJoin', g_Root, v)
 	end
 end
-addEventHandler('onResourceStart', g_Root, base.onResourceStart)
+addEventHandler('onResourceStart', g_ResRoot, base.onResourceStart)
 
 
 function base.onResourceStop()
@@ -81,7 +82,7 @@ function base.onResourceStop()
 		base.stoplist[i]()
 	end
 end
-addEventHandler('onResourceStop', g_Root, base.onResourceStop)
+addEventHandler('onResourceStop', g_ResRoot, base.onResourceStop)
 
 
 function log(Msg)
@@ -110,4 +111,4 @@ function base.onStop()
 	log('base.onStop')
 end
 
-base.addModule('base_db', base.onStart, base.onStop, 'db')
+base.addModule('base_db', base.onStart, base.onStop)

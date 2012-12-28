@@ -1,15 +1,15 @@
 --[[ Spielerfunktionen (plr)
 
 Beschreibung:
-	Alles was man für Spieler so braucht. <.<
+	Alles was man fÃ¼r Spieler so braucht. <.<
 
 
 Funktionen:
 	setSpawn( <Account>, <X>, <Y>, <Z>, <Dimension> ) - Setzt die Spawnposition eines Spielers. (Wird in der DB gespeichert.)
 	bool respawn( <Account> ) - Spawnt einen Spieler.
 	
-	table finalizeSpawn ( <string/table> ) - Wenn eine Spawnvariable über einen Namen definiert ist, wird diese zu einem Spawnpunkt expandiert. Sollte erst aufgerufen werden, wenn die Koordinaten auch tatsächlich gebraucht werden!
-	loadSpawns ( ) - spawns.xml einlesen. -> Für eine Liste von vordefinierten, über Namen erreichbaren Spawns.
+	table finalizeSpawn ( <string/table> ) - Wenn eine Spawnvariable Ã¼ber einen Namen definiert ist, wird diese zu einem Spawnpunkt expandiert. Sollte erst aufgerufen werden, wenn die Koordinaten auch tatsÃ¤chlich gebraucht werden!
+	loadSpawns ( ) - spawns.xml einlesen. -> FÃ¼r eine Liste von vordefinierten, Ã¼ber Namen erreichbaren Spawns.
 	saveSpawns ( ) - Alle Spawns speichern.
 
 ]]
@@ -41,11 +41,11 @@ base.addModule('plr', plr.onStart, plr.onStop, 'acc')
 
 
 function plr.setSkin(AcID, Skin)
-	-- TODO: SkinID prüfen. Aber bitte eine eigene Funktion dafür.
+	-- TODO: SkinID prÃ¼fen. Aber bitte eine eigene Funktion dafÃ¼r.
 	acc.setData(AcID, 'skin', Skin)
 	local plr = acc.getPlayer(AcID)
 	if plr then
-		-- TODO: Spieler können auch einen temporären Skin für Jobs oder so haben. :o
+		-- TODO: Spieler kÃ¶nnen auch einen temporÃ¤ren Skin fÃ¼r Jobs oder so haben. :o
 		setPedSkin(plr, Skin)
 	end
 end

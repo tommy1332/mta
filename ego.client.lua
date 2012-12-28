@@ -11,15 +11,15 @@
 	Beschreibung:
 		restrictFn kann eine Funktion enthalten, welche den Sichtbereich begrenzt.
 		Diese Funktion wird aufgerufen sobald die Maus bewegt wird
-		und bekommt die neuen Rotationswerte übergeben.
-		Jetzt kann diese mit den Werten arbeiten und am Ende neue Werte als Tuple zurückgeben.
+		und bekommt die neuen Rotationswerte Ã¼bergeben.
+		Jetzt kann diese mit den Werten arbeiten und am Ende neue Werte als Tuple zurÃ¼ckgeben.
 
 ]]
 
--- Keine Spezialbehandlung für "vorbeugen" etc., vllt. so ein allgemeiner Offset-Stack .. eh? <- Warum Stack? Liste währ auch möglich oder?
--- Statt dem "sicht-gerade-dreh-interpolations-zeug" vllt. allgemein so ein einen Wert den andere Module setzen können. S.o. -^
--- Die Maus gibt nur die Verschiebung der Sicht an, allerdings werden dazu keine Berechungen in der Spielewelt durchgeführt. => Keine Rückkopplungseffekte!
--- Spezielle Sicht-Offset-Werte für bestimmte Situationen. => Je nach Animation oder Fahrzeug. => So eine XML-Datei welche diese Werte beinhaltet.
+-- Keine Spezialbehandlung fÃ¼r "vorbeugen" etc., vllt. so ein allgemeiner Offset-Stack .. eh? <- Warum Stack? Liste wÃ¤hr auch mÃ¶glich oder?
+-- Statt dem "sicht-gerade-dreh-interpolations-zeug" vllt. allgemein so ein einen Wert den andere Module setzen kÃ¶nnen. S.o. -^
+-- Die Maus gibt nur die Verschiebung der Sicht an, allerdings werden dazu keine Berechungen in der Spielewelt durchgefÃ¼hrt. => Keine RÃ¼ckkopplungseffekte!
+-- Spezielle Sicht-Offset-Werte fÃ¼r bestimmte Situationen. => Je nach Animation oder Fahrzeug. => So eine XML-Datei welche diese Werte beinhaltet.
 
 ego =
 {
@@ -42,7 +42,7 @@ ego =
 }
 
 function ego.updateOffset()
-	ego.viewOffsetTotal = {} -- erstmal zurücksetzen
+	ego.viewOffsetTotal = {} -- erstmal zurÃ¼cksetzen
 	for v in ego.viewOffset do
 		ego.viewOffsetTotal.pos = ego.viewOffsetTotal.pos + v.pos
 		ego.viewOffsetTotal.rot = ego.viewOffsetTotal.rot + v.rot
@@ -66,7 +66,7 @@ end
 function ego.onAim(key, keystate)
 	if keystate == 'down' then
 		if not isPedInVehicle(g_Me) and getPedWeapon(g_Me) ~= 0 and getPedTotalAmmo(g_Me) ~= 0 then
-			ego.isEnabled = false -- TODO: Proxyfunktionen währen toll. Damit könnte dann auch setCameraTarget impliziert werden. ^^
+			ego.isEnabled = false -- TODO: Proxyfunktionen wÃ¤hren toll. Damit kÃ¶nnte dann auch setCameraTarget impliziert werden. ^^
 			setCameraTarget(g_Me, g_Me)
 		end
 	else

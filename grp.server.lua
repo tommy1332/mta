@@ -62,9 +62,9 @@ function grp.updateDB(Id, Key, Value)
 end
 
 
--- Gruppe löschen.
+-- Gruppe lÃ¶schen.
 function grp.delete(GrID)
-	-- Auch alle Childs löschen!
+	-- Auch alle Childs lÃ¶schen!
 
 	--if acc.data[AcID] == nil then return nil end
 	--acc.data[AcID] = nil
@@ -104,7 +104,7 @@ function grp.containsUser(AcID, Group)
 		return false
 	end
 
-	-- Wenn Group als String übergeben wird ...
+	-- Wenn Group als String Ã¼bergeben wird ...
 	if type(Group) == 'string' then
 		Group = grp.get(Group) -- Group-Table holen!
 		if not Group then return false end

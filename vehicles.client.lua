@@ -8,7 +8,7 @@
 		
 ]]
 
---[[ TODO: Vielleicht mal generischer schreiben, sodass man Tachos und Sounds für jedes Auto setzen kann. ]]
+--[[ TODO: Vielleicht mal generischer schreiben, sodass man Tachos und Sounds fÃ¼r jedes Auto setzen kann. ]]
 
 vehicles = 
 {
@@ -34,7 +34,7 @@ vehicles =
 	imageDrehzahlZeiger = 'data/images/drehzahlzeiger.png',
 	imageTankTempZeiger = 'data/images/zeigertanktemp.png',
 	
-	viewData = { default = { pos = Vector(0,0,0), offset = 1 } } -- für jede fahrzeug-id ein table, in dem für jeden sitz die position der kamera gespeichert ist
+	viewData = { default = { pos = Vector(0,0,0), offset = 1 } } -- fÃ¼r jede fahrzeug-id ein table, in dem fÃ¼r jeden sitz die position der kamera gespeichert ist
 }
 
 function vehicles.onStart()
@@ -130,7 +130,7 @@ function vehicles.drawTacho()
 	local veh = getPedOccupiedVehicle(g_Me)
 	if veh then
 		if getVehicleOccupant(veh, 0) == g_Me then
-			-- Henry: Da atm keine Zeichenfunktionen für andere Fahrzeuge existieren, wird bis dahin der Code vom Auto-Zeugs genutzt.
+			-- Henry: Da atm keine Zeichenfunktionen fÃ¼r andere Fahrzeuge existieren, wird bis dahin der Code vom Auto-Zeugs genutzt.
 		
 			--[[ if getVehicleType(veh) == 'BMX' then
 				-- TODO: Add Bicycle Tacho

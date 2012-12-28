@@ -1,28 +1,28 @@
 --[[ Datenbank (db)
 
 Beschreibung:
-	Stellt Funktionen für die Kommunikation mit der Datenbank zur Verfügung.
-	Aktuell wird intern MySQL verwendet. (Das Modul 'mta_mysql' wird benötigt!)
+	Stellt Funktionen fÃ¼r die Kommunikation mit der Datenbank zur VerfÃ¼gung.
+	Aktuell wird intern MySQL verwendet. (Das Modul 'mta_mysql' wird benÃ¶tigt!)
 
 
 Variablen:
-	connection - Internes DB-Handle. Sollte nach möglichkeit nicht verwendet werden.
+	connection - Internes DB-Handle. Sollte nach mÃ¶glichkeit nicht verwendet werden.
 							 Lieber ein Featurerequest machen.
 
 
 Funktionen:
 	connect ( ) - Stellt eine Verbindung zur Datenbank her. (Siehe Einstellungswerte.)
 	disconnect ( ) - Trennt eine bestehende Verbindung.
-	bool handleError ( ) - Prüft auf SQL-Fehler und loggt diese ggF.
-	table/nil query ( <Kommando> ) - Führt eine SQL-Query aus.
+	bool handleError ( ) - PrÃ¼ft auf SQL-Fehler und loggt diese ggF.
+	table/nil query ( <Kommando> ) - FÃ¼hrt eine SQL-Query aus.
 	string escQS ( <String> ) - Sichert einen String gegen SQL-Injections ab. (D.h. alle SQL-Befehle werden escapt.)
 	createTable ( <Definition> ) - Sofern nicht vorhanden, wird eine neue Tabelle mit der angegebenen Definition erstellt.
 
 	
 Einstellungswerte:
-	hostname - Die URL, auf der der DB-Server läuft.
+	hostname - Die URL, auf der der DB-Server lÃ¤uft.
 	username - Der Benutzer.
-	password - Das Passwort (wenn benötigt).
+	password - Das Passwort (wenn benÃ¶tigt).
 	database - Der Name der Datenbank.
 
 ]]
@@ -65,7 +65,7 @@ end
 base.addModule('db', db.connect, db.disconnect)
 
 
--- Errorhandling für Dummies. :3
+-- Errorhandling fÃ¼r Dummies. :3
 function db.handleError(what)
 	if mysql_errno(db.connection) == 0 then
 		return false
@@ -75,7 +75,7 @@ function db.handleError(what)
 end
 
 
--- Einen Query-String ausführen
+-- Einen Query-String ausfÃ¼hren
 function db.query(query)
 	local result = mysql_query(db.connection, query)
 	

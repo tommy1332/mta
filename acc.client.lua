@@ -4,15 +4,15 @@
 Funktionen:
 	createLoginWindow ( ) - Fenster initial erstellen.
 	openLoginWindow ( ) - Fenster leeren anzeigen.
-	closeLoginWindow ( ) - Fenster schließen.
+	closeLoginWindow ( ) - Fenster schlieÃŸen.
 	
-	onLoginCancel ( ) - Wenn auf den Cancel-Knopf gedrückt wurde.
-	onLoginSubmit ( ) - Wenn auf den Submit-Knopf gedrückt wurde.
+	onLoginCancel ( ) - Wenn auf den Cancel-Knopf gedrÃ¼ckt wurde.
+	onLoginSubmit ( ) - Wenn auf den Submit-Knopf gedrÃ¼ckt wurde.
 	onLoginResponse ( ) - Wenn der Server auf ein Submit antwortet.
 	
 	loadSettings ( ) - Einstellungen aus der Config laden.
 	saveSettings ( ) - Einstellungen in Config speichern.
-	deleteLoginSettings ( ) - Login-Daten aus der Config löschen.
+	deleteLoginSettings ( ) - Login-Daten aus der Config lÃ¶schen.
 
 ]]
 
@@ -128,7 +128,7 @@ end
 function acc.onLoginSubmit()
 	log('acc.onLoginSubmit')
 
-	-- TODO: Hier erstmal vorprüfen!
+	-- TODO: Hier erstmal vorprÃ¼fen!
 
 	triggerServerEvent('acc.onLoginSubmit', g_Me, g_Me, guiGetText(acc.login.name), guiGetText(acc.login.pw))
 

@@ -21,7 +21,7 @@
 		
 	Kommandos:
 		/veh [modelid]  < Kommando um ein beliebiges Fahrzeug zu erstellen
-		/lock           < Kommando um ein Fahrzeug auf- und abzuschließen
+		/lock           < Kommando um ein Fahrzeug auf- und abzuschlieÃŸen
 		/taxi           < Kommando um die Taxi Lichter ein- und abzustellen
 		
 	Tasten Bindings:
@@ -214,7 +214,7 @@ function vehicles.commandVeh(playerSource, commandName, col1)
 	end
 end
 
--- Kommando um ein Fahrzeug abzuschließen / aufzuschließen
+-- Kommando um ein Fahrzeug abzuschlieÃŸen / aufzuschlieÃŸen
 function vehicles.commandLock(playerSource) -- TODO: Maybe add Sound
 	local veh = getPedOccupiedVehicle(playerSource)
 	if not veh then

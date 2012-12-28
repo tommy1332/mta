@@ -5,7 +5,7 @@ Beschreibung:
 
 
 Funktionen:
-	Vector( < Initiale Werte (geben auch die Dimension an) > ) - gibt einen N-dimensionalen Vektor zurück
+	Vector( < Initiale Werte (geben auch die Dimension an) > ) - gibt einen N-dimensionalen Vektor zurÃ¼ck
 ]]
 
 vec = {}

@@ -1,7 +1,7 @@
 --[[ Basisscript (base)
 
 Beschreibung:
-	Allgemeine Sachen, die von jedem Modul benötigt werden.
+	Allgemeine Sachen, die von jedem Modul benÃ¶tigt werden.
 
 
 Variablen:
@@ -11,8 +11,8 @@ Variablen:
 
 
 Funktionen:
-	log ( <Nachricht> ) - Loggt ein Ereignis. ( Warscheinlich kommt später noch eine Option für den Ereignistyp hinzu -> Info,Warning,Error oder sowas)
-	addModule ( <Name>, <Startfunktion>, <Stopfunktion>, <Abhängigkeiten> ) - Registriert ein neues Modul.
+	log ( <Nachricht> ) - Loggt ein Ereignis. ( Warscheinlich kommt spÃ¤ter noch eine Option fÃ¼r den Ereignistyp hinzu -> Info,Warning,Error oder sowas)
+	addModule ( <Name>, <Startfunktion>, <Stopfunktion>, <AbhÃ¤ngigkeiten> ) - Registriert ein neues Modul.
 
 ]]
 

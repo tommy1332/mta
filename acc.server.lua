@@ -7,14 +7,14 @@ Beschreibung:
 
 Funktionen:
 	initDB ( ) - Initiiert die Tabelle in der Datenbank.
-	AcID findByPlayer ( <Spielerobjekt> ) - Account-ID nach Spielerobjekt finden. (Funktioniert natürlich nur bei Spielern, die online sind.)
+	AcID findByPlayer ( <Spielerobjekt> ) - Account-ID nach Spielerobjekt finden. (Funktioniert natÃ¼rlich nur bei Spielern, die online sind.)
 	AcID findByName ( <Name> ) - Account-ID nach Namen finden.
 	AcID create( <Name>, <Passworthash> ) - Account aus Name und Passworthash erstellen. (Sofern der Name noch nicht vergeben ist.)
-	delete( <ID> ) - Account löschen.
+	delete( <ID> ) - Account lÃ¶schen.
 	loadAll ( ) - Komplette Datenbank laden.
 	saveAll ( ) - Alle Accounts in die Datenbank speichern.
 	save ( <ID> ) - Einzelnen Account speichern. ( Im Prinzip werden hier nur die Metadaten gespeichert, da der Rest immer sofort gesynct wird. )
-	bool exists ( <ID ) - Prüft ob ein bestimmter Account existiert.
+	bool exists ( <ID ) - PrÃ¼ft ob ein bestimmter Account existiert.
 
 	setName ( <ID>, <Name> ) - Setzt und synct den Namen.
 	string getName ( <ID> ) - Gibt den Namen aus.
@@ -22,8 +22,8 @@ Funktionen:
 	setPwHash ( <ID>, <Passworthash> ) - Setzt und synct den Passworthash.
 	string getPwHash ( <ID> ) - Gibt den Passworthash aus.
 
-	setData ( <ID>, <Schlüssel>, <Wert> ) - Setzt Metadaten. (Wird erst bei save() gesynct.)
-	any getData ( <ID>, <Schlüssel> ) - Gibt bestimmte Metadaten aus.
+	setData ( <ID>, <SchlÃ¼ssel>, <Wert> ) - Setzt Metadaten. (Wird erst bei save() gesynct.)
+	any getData ( <ID>, <SchlÃ¼ssel> ) - Gibt bestimmte Metadaten aus.
 	
 	setPlayer( <ID> , <Spielerobjekt> ) - Setzt das Spielerobjekt.
 	player getPlayer( <ID> ) - Gibt das Spielerobjekt aus, nil wenn der Spieler offline ist.
@@ -74,7 +74,7 @@ function acc.updateDB(AcID, Key, Value)
 end
 
 
--- Dem zum Spieler gehörenden Account finden.
+-- Dem zum Spieler gehÃ¶renden Account finden.
 function acc.findByPlayer(Plr)
 	return acc.plr2acc[Plr]
 end
@@ -101,7 +101,7 @@ function acc.create(Name, PwHash)
 end
 
 
--- Account löschen.
+-- Account lÃ¶schen.
 function acc.delete(AcID)
 	if acc.data[AcID] == nil then return nil end
 	acc.data[AcID] = nil
@@ -118,6 +118,8 @@ function acc.loadAll()
 
 	for i = 1, #tbl, 1 do
 		acc.data[tonumber(tbl[i].id)] = { name=tbl[i].name, pwhash=tbl[i].pwhash, meta=fromJSON(tbl[i].meta), syncmeta=false, plr=nil }
+		log(tbl[i].meta)
+		log(fromJSON(tbl[i].meta))
 	end
 end
 

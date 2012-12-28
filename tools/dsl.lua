@@ -2,21 +2,21 @@
 
 Beschreibung:
 	Klasse um tolle DSLs zu erstellen und zu 'kompilieren'.
-	DSL heisst zu deutsch 'Abhängigkeit sortierte Liste', d.h. dass jedem Wert ein Schlüssel und
-	beliebig viele Abhängigkeiten zugeordnet werden.
-	Die Werte werden so sortiert, dass sie erst dann auftauchen, wenn ihre Abhängigkeiten schon in der Liste sind,
-	insofern muss es mindestens einen Wert ohne Abhängigkeiten geben.
+	DSL heisst zu deutsch 'AbhÃ¤ngigkeit sortierte Liste', d.h. dass jedem Wert ein SchlÃ¼ssel und
+	beliebig viele AbhÃ¤ngigkeiten zugeordnet werden.
+	Die Werte werden so sortiert, dass sie erst dann auftauchen, wenn ihre AbhÃ¤ngigkeiten schon in der Liste sind,
+	insofern muss es mindestens einen Wert ohne AbhÃ¤ngigkeiten geben.
 
 
 Funktionen:
 	dsl createDSL ( ) - Erstellt eine DSL-Instanz.
-	dsl:add ( <Schlüssel>, <Wert>, <Abhängigkeiten -> ...> ) - Fügt einer DSL neue Werte hinzu.
-	dsl:compile ( <Rückwärts> ) - Kompiliert eine DSL, dabei wird die DSL sortiert und alles außer den Werten gelöscht.
+	dsl:add ( <SchlÃ¼ssel>, <Wert>, <AbhÃ¤ngigkeiten -> ...> ) - FÃ¼gt einer DSL neue Werte hinzu.
+	dsl:compile ( <RÃ¼ckwÃ¤rts> ) - Kompiliert eine DSL, dabei wird die DSL sortiert und alles auÃŸer den Werten gelÃ¶scht.
 
 
 Kommentar:
-	Ich hoffe mal, es sind genug Kommentare vorhanden, denn der Code an sich ist leider zwangsläufig ein Monster. :X
-	Es gibt außerdem die Einschränkung, das man keine Abhängigkeits-Loops erstellen sollte, d.h. das zwei Einträge von sich gegenseitig abhängig sind.
+	Ich hoffe mal, es sind genug Kommentare vorhanden, denn der Code an sich ist leider zwangslÃ¤ufig ein Monster. :X
+	Es gibt auÃŸerdem die EinschrÃ¤nkung, das man keine AbhÃ¤ngigkeits-Loops erstellen sollte, d.h. das zwei EintrÃ¤ge von sich gegenseitig abhÃ¤ngig sind.
 	Zwar gibt es eine Notsicherung gegen eine Unendlich-Schleife, aber toll explizit wird sowas nicht behoben!
 		Henry Kielmann - 2010
 
@@ -34,17 +34,17 @@ function dsl:add(Key, Value, ...)
 end
 
 function dsl:compile(Reverse)
-	-- Schritt 1: Alle Abhängigkeiten löschen, die es nicht gibt.
+	-- Schritt 1: Alle AbhÃ¤ngigkeiten lÃ¶schen, die es nicht gibt.
 
 	for i = 1, #self, 1 do
-		-- Für jeden Eintrag...
+		-- FÃ¼r jeden Eintrag...
 
-		for k,v in pairs(self[i][3]) do -- TODO: Warum zur HÖLLE ist es Index 3? Hä? HÄH? Das ist UN-LO-GISCH!13lf :C
+		for k,v in pairs(self[i][3]) do -- TODO: Warum zur HÃ–LLE ist es Index 3? HÃ¤? HÃ„H? Das ist UN-LO-GISCH!13lf :C
 			local found = false
 
-			-- Für jede Abhängigkeit...
+			-- FÃ¼r jede AbhÃ¤ngigkeit...
 			for j = 1, #self, 1 do
-				-- In allen Einträgen nach dessen Vorkommen suchen.
+				-- In allen EintrÃ¤gen nach dessen Vorkommen suchen.
 				if self[j][1] == v then
 					found = true
 					break
@@ -52,7 +52,7 @@ function dsl:compile(Reverse)
 			end
 			
 			if found == false then
-				-- Wenn es diese Abhängigkeit nicht gibt: diese löschen!
+				-- Wenn es diese AbhÃ¤ngigkeit nicht gibt: diese lÃ¶schen!
 				table.remove(self[i][3], k)
 			end
 			
@@ -73,13 +73,13 @@ function dsl:compile(Reverse)
 			i = i + 1
 			if i > imax then break end
 
-			-- Für jeden Eintrag...
+			-- FÃ¼r jeden Eintrag...
 			local found = 0
 			
 			for k,v in pairs(self[i][3]) do
-				-- Für jede Abhängigkeit...
+				-- FÃ¼r jede AbhÃ¤ngigkeit...
 				for j = 1, #out, 1 do
-					-- In allen fertigen Einträgen nach dessen Vorkommen suchen.
+					-- In allen fertigen EintrÃ¤gen nach dessen Vorkommen suchen.
 					if out[j][1] == v then
 						found = found + 1
 					end
@@ -87,7 +87,7 @@ function dsl:compile(Reverse)
 			end
 
 			if found >= #self[i][3] then
-				-- Wenn alle Abhängigkeiten schon in der Liste sind: Verschieben! :D
+				-- Wenn alle AbhÃ¤ngigkeiten schon in der Liste sind: Verschieben! :D
 				out[#out+1] = { self[i][1], self[i][2] }
 				table.remove(self, i)
 				

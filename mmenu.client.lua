@@ -1,19 +1,19 @@
---[[ Hauptmenü (mmenu)
+--[[ HauptmenÃ¼ (mmenu)
 
 
 Beschreibung:
-	Stellt das Hauptmenü (F1) zur Verfügung,
-	welches allgemeine Funktionen dem Spieler zur Verfügung stellt.
+	Stellt das HauptmenÃ¼ (F1) zur VerfÃ¼gung,
+	welches allgemeine Funktionen dem Spieler zur VerfÃ¼gung stellt.
 
 
 Funktionen:
-	show ( ) - Öffnet das Fenster, falls dies noch nicht geschehen ist.
-	hide ( ) - Schließt das Fenster, sofern es noch nicht geschehen ist.
-	toggle ( ) - Öffnet das Fenster bzw. schließt es.
-	select ( <Name> ) - Wählt einen bestimmten Tab aus.
+	show ( ) - Ã–ffnet das Fenster, falls dies noch nicht geschehen ist.
+	hide ( ) - SchlieÃŸt das Fenster, sofern es noch nicht geschehen ist.
+	toggle ( ) - Ã–ffnet das Fenster bzw. schlieÃŸt es.
+	select ( <Name> ) - WÃ¤hlt einen bestimmten Tab aus.
 
-	element add ( <Name> ) - Erstellt ein neues Tab mit dem angegebenen Namen und gibt ein entsprechendes Containerobjekt zurück.
-	remove ( <Name> ) - Löscht den Tab mit dem angegebenen Namen.
+	element add ( <Name> ) - Erstellt ein neues Tab mit dem angegebenen Namen und gibt ein entsprechendes Containerobjekt zurÃ¼ck.
+	remove ( <Name> ) - LÃ¶scht den Tab mit dem angegebenen Namen.
 
 ]]
 

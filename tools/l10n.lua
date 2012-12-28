@@ -1,12 +1,12 @@
 --[[ Localization (l10n)
 
 Beschreibung:
-	Für lokalisierung von Texten.
-	L10N ist eine weitverbreitete Abkürzung für 'Localization',
+	FÃ¼r lokalisierung von Texten.
+	L10N ist eine weitverbreitete AbkÃ¼rzung fÃ¼r 'Localization',
 	wers nicht glaubt kann ja mal in Wikipedia gucken. ^.^
 	
 Functionen:
-	load ( <Name> ) -  Läd eine Lokalisierungsdatei.
+	load ( <Name> ) -  LÃ¤d eine Lokalisierungsdatei.
 
 ]]
 
